@@ -1,0 +1,113 @@
+import java.util.Iterator;
+
+
+public class AvlTree implements Iterable<Integer> {
+
+    protected AvlNode root;
+
+    /**
+     * The default constructor for the AvlTree class
+     */
+    public AvlTree(){
+
+    }
+
+    /**
+     * A constructor that takes an array of integers and initializes a new AvlTree containing the elements in
+     * the array
+     * @param data An array of integers to be added to the AVL Tree
+     */
+    public AvlTree(int[] data){
+
+    }
+
+    /**
+     * A constructor that takes an existing AvlTree and creates a deep copy in a new AvlTree
+     * @param tree the AvlTree to be deep-copied
+     */
+    public AvlTree(AvlTree tree){
+
+    }
+
+    /**
+     * Take an integer and add it to the Avl tree
+     * @param newValue the integer value to be added
+     * @return True if the value was added successfully, false otherwise
+     */
+    public boolean add(int newValue){
+        return true;
+    }
+
+    /**
+     * Take an integer and search the Avl tree to see if the integer is contained in the tree
+     * @param searchVal the integer value to be searched for
+     * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
+     */
+    public int contains(int searchVal){
+        return -1;
+    }
+
+    /**
+     * Take an integer and attempt to delete it from the Avl tree
+     * @param toDelete the value to be deleted
+     * @return True if the value is found and deleted successfuly, false otherwise.
+     */
+    public boolean delete(int toDelete){
+        return true;
+    }
+
+    //Not sure we need to implement this?
+    protected final java.util.ArrayList<AvlNode> inOrder(){
+
+    }
+
+    // Same?
+    protected final void inorder(AvlNode n,java.util.ArrayList<AvlNode> io){
+
+    }
+
+    /**
+     * Returns the current number of nodes in the Avl tree
+     * @return the current size of the tree
+     */
+    public int size(){
+        return -1;
+    }
+
+    /**
+     * Returns an Iterator object that iterates over the elements of the Avl tree in ascending order
+     * @return An Iterator object that does not implement remove()
+     */
+    public java.util.Iterator<Integer> iterator(){
+
+    }
+
+    /**
+     * Take an integer representing the height of an AvlTree and return the minimum number of nodes
+     * possible in an AvlTree of that height
+     * @param h the height of an AvlTree
+     * @return the minimum size of an AvlTree
+     */
+    public static int findMinNodes(int h){
+        return -1;
+    }
+
+    /**
+     * Take an integer representing the height of an AvlTree and return the maximum number of nodes
+     * possible in an AvlTree of that height
+     * @param h the height of an AvlTree
+     * @return the maximum size of an AvlTree
+     */
+    public static int findMaxNodes(int h){
+        return (2^(h+1)) - 1;
+    }
+
+    /**
+     *
+     * @param args
+     */
+    public static void main(java.lang.String[] args){
+
+    }
+
+}
