@@ -1,0 +1,9 @@
+public class AvlNode {
+
+    /**
+     * A default constructor for the AvlNode class
+     */
+    public AvlNode(){
+
+    }
+}
