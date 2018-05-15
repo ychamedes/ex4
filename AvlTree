@@ -3,6 +3,8 @@ import java.util.Iterator;
 
 public class AvlTree implements Iterable<Integer> {
 
+    private final static int NEGATIVE_CONTAINS_RESULT = -1;
+
     protected AvlNode root;
 
     /**
@@ -18,7 +20,11 @@ public class AvlTree implements Iterable<Integer> {
      * @param data An array of integers to be added to the AVL Tree
      */
     public AvlTree(int[] data){
-
+        if(data != null) {
+            for (int newValue : data) {
+                add(newValue);
+            }
+        }
     }
 
     /**
@@ -44,7 +50,7 @@ public class AvlTree implements Iterable<Integer> {
      * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
      */
     public int contains(int searchVal){
-        return -1;
+        return NEGATIVE_CONTAINS_RESULT;
     }
 
     /**
@@ -56,15 +62,6 @@ public class AvlTree implements Iterable<Integer> {
         return true;
     }
 
-    //Not sure we need to implement this?
-    protected final java.util.ArrayList<AvlNode> inOrder(){
-
-    }
-
-    // Same?
-    protected final void inorder(AvlNode n,java.util.ArrayList<AvlNode> io){
-
-    }
 
     /**
      * Returns the current number of nodes in the Avl tree
