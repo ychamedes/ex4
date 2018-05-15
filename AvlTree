@@ -81,12 +81,16 @@ public class AvlTree implements Iterable<Integer> {
 
     /**
      * Take an integer representing the height of an AvlTree and return the minimum number of nodes
-     * possible in an AvlTree of that height
+     * possible in an AvlTree of that height.
      * @param h the height of an AvlTree
      * @return the minimum size of an AvlTree
      */
     public static int findMinNodes(int h){
-        return -1;
+        //Since the minimum size of the avl tree can be expressed as a recursive function, we can use the
+        // fibonacci series to find it for height h, using (1 + sqrt(5)/2) as an approximation of the
+        // golden ratio
+        return (int)(((Math.pow((1 + Math.sqrt(5) / 2), h + 2)-Math.pow((1 + Math.sqrt(5) / 2), h + 2)) /
+                Math.sqrt(5)) - 1);
     }
 
     /**
@@ -96,7 +100,7 @@ public class AvlTree implements Iterable<Integer> {
      * @return the maximum size of an AvlTree
      */
     public static int findMaxNodes(int h){
-        return (2^(h+1)) - 1;
+        return (int)Math.pow(2, h+1) - 1;
     }
 
     /**
