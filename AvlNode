@@ -1,6 +1,7 @@
 public class AvlNode {
 
     private int data;
+    private AvlNode parent;
     private AvlNode rightChild;
     private AvlNode leftChild;
     private int nodeDepth;
@@ -28,6 +29,10 @@ public class AvlNode {
 
     public boolean hasLeftChild(){
         return leftChild != null;
+    }
+
+    public AvlNode getParent() {
+        return parent;
     }
 
     public AvlNode getRightChild(){
