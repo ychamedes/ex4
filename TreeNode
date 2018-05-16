@@ -1,0 +1,55 @@
+public class TreeNode {
+
+    private int data;
+    private AvlNode parent;
+    private AvlNode rightChild;
+    private AvlNode leftChild;
+    private int nodeDepth;
+    private int nodeHeight;
+
+    /**
+     * A default constructor for the TreeNode class
+     */
+    public TreeNode(){
+
+    }
+
+    public int getData(){
+    }
+
+    public int getNodeDepth(){
+
+    }
+
+    public boolean hasRightChild(){
+        return rightChild != null;
+    }
+
+    public boolean hasLeftChild(){
+        return leftChild != null;
+    }
+
+    public AvlNode getParent() {
+        return parent;
+    }
+
+    public AvlNode getRightChild(){
+        return rightChild;
+    }
+
+    public AvlNode getLeftChild(){
+        return leftChild;
+    }
+
+    public void setData(int newData){
+        data = newData;
+    }
+
+    public void setRightChild(TreeNode newRightChild){
+        rightChild = newRightChild;
+    }
+
+    public void setLeftChild(TreeNode newLeftChild){
+        leftChild = newLeftChild;
+    }
+}
