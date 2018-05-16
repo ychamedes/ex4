@@ -41,8 +41,53 @@ public class AvlTree implements Iterable<Integer> {
      * @return True if the value was added successfully, false otherwise
      */
     public boolean add(int newValue){
-        return true;
+        if(contains(newValue) != NEGATIVE_CONTAINS_RESULT) {
+            AvlNode addedNode = addNode(root, newValue);
+            rebalanceNode(addedNode);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
+
+    private AvlNode addNode(AvlNode node, int addValue){
+        if(node == null || node.getData() == addValue){
+            node = new AvlNode();
+            node.setData(addValue);
+            return node;
+        }
+        else if(node.getData() > addValue){
+            return(addNode(node.getRightChild(), addValue));
+        }
+        else{
+            return(addNode(node.getLeftChild(), addValue));
+        }
+    }
+
+    private void rebalanceNode(AvlNode node){
+        int balance = node.findNodeBalance();
+        if(balance > 1){
+            if(){
+
+            }
+            else if(){
+
+            }
+        }
+        else if(balance < -1){
+            if(){
+
+            }
+            else if(){
+                
+            }
+        }
+        if(node.getParent() != null){
+            rebalanceNode(node.getParent());
+        }
+    }
+
 
     /**
      * Take an integer and search the Avl tree to see if the integer is contained in the tree
@@ -62,14 +107,14 @@ public class AvlTree implements Iterable<Integer> {
     private int containsHelper(AvlNode node, int searchVal) {
         if (node.getData() == searchVal) {
             return node.getNodeDepth();
-        } else if (!node.hasRightChild() && !node.hasLeftChild()) {
+        } else if (node.getRightChild() == null && node.getLeftChild() == null) {
             return NEGATIVE_CONTAINS_RESULT;
         } else {
-            if (node.hasRightChild() && containsHelper(node.getRightChild(), searchVal) !=
+            if (node.getRightChild() != null && containsHelper(node.getRightChild(), searchVal) !=
                     NEGATIVE_CONTAINS_RESULT) {
                 return containsHelper(node.getRightChild(), searchVal);
             }
-            if (node.hasLeftChild() && containsHelper(node.getLeftChild(), searchVal) !=
+            if (node.getLeftChild() != null && containsHelper(node.getLeftChild(), searchVal) !=
                     NEGATIVE_CONTAINS_RESULT) {
                 return containsHelper(node.getLeftChild(), searchVal);
             }
