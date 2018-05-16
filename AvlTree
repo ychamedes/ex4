@@ -131,6 +131,23 @@ public class AvlTree implements Iterable<Integer> {
      *
      * @param args
      */
+
+    private void rotateLL(AvlNode root){
+
+    }
+
+    private void rotateLR(AvlNode root){
+
+    }
+
+    private void rotateRR(AvlNode root){
+
+    }
+
+    private void rotateRL(AvlNode root){
+
+    }
+
     public static void main(java.lang.String[] args){
 
     }
