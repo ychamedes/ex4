@@ -58,4 +58,8 @@ public class AvlNode {
     public void setLeftChild(AvlNode newLeftChild){
         leftChild = newLeftChild;
     }
+    
+    public int findNodeBalance(){
+        return(leftChild.getNodeHeight() - rightChild.getNodeHeight());
+    }
 }
