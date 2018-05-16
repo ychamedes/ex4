@@ -5,6 +5,7 @@ public class AvlNode {
     private AvlNode leftChild;
     private int nodeDepth;
     private int nodeHeight;
+    private int balance;
 
     /**
      * A default constructor for the AvlNode class
