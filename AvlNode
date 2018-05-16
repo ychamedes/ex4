@@ -37,4 +37,8 @@ public class AvlNode {
     public AvlNode getLeftChild(){
         return leftChild;
     }
+    
+    public void setData(int newData){
+        data = newData;
+    }
 }
