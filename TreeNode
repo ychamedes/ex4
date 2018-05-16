@@ -25,6 +25,10 @@ public class TreeNode {
     public int getNodeHeight(){
         return nodeHeight;
     }
+    
+    public boolean hasParent(){
+        return parent != null;
+    }
 
     public boolean hasRightChild(){
         return rightChild != null;
