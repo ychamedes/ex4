@@ -52,7 +52,7 @@ public class AvlTree implements Iterable<Integer> {
     }
 
     private AvlNode addNode(AvlNode node, int addValue){
-        if(node == null || node.getData() == addValue){
+        if(node == null){
             node = new AvlNode();
             node.setData(addValue);
             return node;
