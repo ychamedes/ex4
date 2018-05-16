@@ -50,6 +50,30 @@ public class AvlTree implements Iterable<Integer> {
      * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
      */
     public int contains(int searchVal){
+        return containsHelper(root, searchVal);
+    }
+
+    /**
+     *
+     * @param root
+     * @param searchVal
+     * @return
+     */
+    private int containsHelper(AvlNode node, int searchVal) {
+        if (node.getData() == searchVal) {
+            return node.getNodeDepth();
+        } else if (!node.hasRightChild() && !node.hasLeftChild()) {
+            return NEGATIVE_CONTAINS_RESULT;
+        } else {
+            if (node.hasRightChild() && containsHelper(node.getRightChild(), searchVal) !=
+                    NEGATIVE_CONTAINS_RESULT) {
+                return containsHelper(node.getRightChild(), searchVal);
+            }
+            if (node.hasLeftChild() && containsHelper(node.getLeftChild(), searchVal) !=
+                    NEGATIVE_CONTAINS_RESULT) {
+                return containsHelper(node.getLeftChild(), searchVal);
+            }
+        }
         return NEGATIVE_CONTAINS_RESULT;
     }
 
