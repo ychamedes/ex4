@@ -22,21 +22,9 @@ public class AvlNode {
     public int getNodeDepth(){
         return nodeDepth;
     }
-    
+
     public int getNodeHeight(){
         return nodeHeight;
-    }
-    
-    public boolean hasParent(){
-        return parent != null;
-    }
-    
-    public boolean hasRightChild(){
-        return rightChild != null;
-    }
-
-    public boolean hasLeftChild(){
-        return leftChild != null;
     }
 
     public AvlNode getParent() {
@@ -62,7 +50,7 @@ public class AvlNode {
     public void setLeftChild(AvlNode newLeftChild){
         leftChild = newLeftChild;
     }
-    
+
     public int findNodeBalance(){
         return(leftChild.getNodeHeight() - rightChild.getNodeHeight());
     }
