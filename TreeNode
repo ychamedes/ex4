@@ -15,10 +15,15 @@ public class TreeNode {
     }
 
     public int getData(){
+        return data;
     }
 
     public int getNodeDepth(){
-
+        return nodeDepth;
+    }
+    
+    public int getNodeHeight(){
+        return nodeHeight;
     }
 
     public boolean hasRightChild(){
