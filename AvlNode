@@ -27,6 +27,10 @@ public class AvlNode {
         return nodeHeight;
     }
     
+    public boolean hasParent(){
+        return parent != null;
+    }
+    
     public boolean hasRightChild(){
         return rightChild != null;
     }
