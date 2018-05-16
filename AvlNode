@@ -1,9 +1,39 @@
 public class AvlNode {
 
+    private int data;
+    private AvlNode rightChild;
+    private AvlNode leftChild;
+    private int nodeDepth;
+    private int nodeHeight;
+
     /**
      * A default constructor for the AvlNode class
      */
     public AvlNode(){
 
+    }
+
+    public int getData(){
+
+    }
+
+    public int getNodeDepth(){
+
+    }
+
+    public boolean hasRightChild(){
+        return rightChild != null;
+    }
+
+    public boolean hasLeftChild(){
+        return leftChild != null;
+    }
+
+    public AvlNode getRightChild(){
+        return rightChild;
+    }
+
+    public AvlNode getLeftChild(){
+        return leftChild;
     }
 }
