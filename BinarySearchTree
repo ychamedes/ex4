@@ -1,0 +1,91 @@
+import java.util.Iterator;
+
+public abstract class BinarySearchTree implements Iterable<Integer> {
+
+    protected TreeNode root = new TreeNode();
+
+    protected final static int NEGATIVE_CONTAINS_RESULT = -1;
+
+    public BinarySearchTree() {
+    }
+
+    /**
+     * Take an integer and add it to the Avl tree
+     * @param newValue the integer value to be added
+     * @return True if the value was added successfully, false otherwise
+     */
+    public abstract boolean add(int newValue);
+
+    /**
+     * Take an integer and attempt to delete it from the Avl tree
+     * @param toDelete the value to be deleted
+     * @return True if the value is found and deleted successfuly, false otherwise.
+     */
+    public abstract boolean delete(int toDelete);
+
+    /**
+     * Take an integer and search the BST to see if the integer is contained in the tree
+     * @param searchVal the integer value to be searched for
+     * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
+     */
+    public int contains(int searchVal){
+        return containsHelper(root, searchVal);
+    }
+
+    /**
+     * @param node The root of the tree (or sub-tree) being searched.
+     * @param searchVal the integer value to be searched for.
+     * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
+     */
+    private int containsHelper(TreeNode node, int searchVal) {
+        if (node == null) return NEGATIVE_CONTAINS_RESULT;
+        else if (node.getData() == searchVal) return node.getNodeDepth();
+
+        /* Check if current key is larger or greater than search value. */
+        if (node.getData() < searchVal) return containsHelper(node.getRightChild(), searchVal);
+        else return containsHelper(node.getLeftChild(), searchVal);
+    }
+
+    /**
+     * Returns the current number of nodes in the BST
+     * @return the current size of the tree
+     */
+    public int size(){
+        int counter = 0;
+        Iterator iterator = iterator();
+
+        while (iterator.hasNext()){
+            counter++;
+            iterator.next();
+        }
+        return counter;
+    }
+
+    /**
+     * Returns an Iterator object that iterates over the elements of the BST tree in ascending order
+     * @return An Iterator object that does not implement remove()
+     */
+    public java.util.Iterator<Integer> iterator(){
+
+        class BSTIterator implements Iterator<Integer>{
+            TreeNode current = root;
+
+            @Override
+            public boolean hasNext() {
+                if (current == null) return false;
+                else return current.getData() != next();
+            }
+
+            @Override
+            public Integer next() {
+                if (current.getLeftChild() != null) current = current.getLeftChild();
+                else if (current.getRightChild() != null) current = current.getRightChild();
+                else current = current.getParent();
+
+                return current.getData();
+            }
+        }
+
+        return new BSTIterator();
+    }
+}
