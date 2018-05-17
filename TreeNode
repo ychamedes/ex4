@@ -1,11 +1,11 @@
-public class TreeNode {
+public abstract class TreeNode {
 
     private int data;
-    private AvlNode parent;
-    private AvlNode rightChild;
-    private AvlNode leftChild;
+    protected TreeNode parent;
+    protected TreeNode rightChild;
+    protected TreeNode leftChild;
     private int nodeDepth;
-    private int nodeHeight;
+    protected int nodeHeight;
 
     /**
      * A default constructor for the TreeNode class
@@ -21,11 +21,11 @@ public class TreeNode {
     public int getNodeDepth(){
         return nodeDepth;
     }
-    
+
     public int getNodeHeight(){
         return nodeHeight;
     }
-    
+
     public boolean hasParent(){
         return parent != null;
     }
@@ -38,15 +38,15 @@ public class TreeNode {
         return leftChild != null;
     }
 
-    public AvlNode getParent() {
+    public TreeNode getParent() {
         return parent;
     }
 
-    public AvlNode getRightChild(){
+    public TreeNode getRightChild(){
         return rightChild;
     }
 
-    public AvlNode getLeftChild(){
+    public TreeNode getLeftChild(){
         return leftChild;
     }
 
@@ -60,5 +60,9 @@ public class TreeNode {
 
     public void setLeftChild(TreeNode newLeftChild){
         leftChild = newLeftChild;
+    }
+
+    public void setParent(AvlNode newParent){
+        parent = newParent;
     }
 }
