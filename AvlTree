@@ -69,7 +69,8 @@ public class AvlTree extends BinarySearchTree {
                 rotateLeft(node);
             }
             else if(addValue > node.getLeftChild().getData()){
-                rotateLR(node);
+                rotateLeft(node.getLeftChild());
+                rotateRight(node);
             }
         }
         else if(balance < -1){
@@ -77,7 +78,8 @@ public class AvlTree extends BinarySearchTree {
                 rotateRight(node);
             }
             else if(addValue > node.getRightChild().getData()){
-                rotateRL(node);
+                rotateRight(node.getRightChild());
+                rotateLeft(node);
             }
         }
         if(node.getParent() != null){
@@ -118,11 +120,6 @@ public class AvlTree extends BinarySearchTree {
         return (int)Math.pow(2, h+1) - 1;
     }
 
-    /**
-     *
-     * @param args
-     */
-
     private void rotateLeft(AvlNode root){
         //Set new references
         AvlNode newRoot = root.getLeftChild();
@@ -137,11 +134,7 @@ public class AvlTree extends BinarySearchTree {
         root.setNodeHeight(1);
     }
 
-    private void rotateLR(AvlNode root){
-        rotateLeft(root.getLeftChild());
-        rotateRight(root);
-    }
-
+    
     private void rotateRight(AvlNode root){
         //Set new references
         AvlNode newRoot = root.getRightChild();
@@ -157,10 +150,6 @@ public class AvlTree extends BinarySearchTree {
 
     }
 
-    private void rotateRL(AvlNode root){
-        rotateRight(root.getRightChild());
-        rotateLeft(root);
-    }
 
     public static void main(java.lang.String[] args){
 
