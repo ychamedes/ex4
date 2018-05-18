@@ -28,6 +28,18 @@ public class AvlNode extends oop.ex4.data_structures.TreeNode {
         parent = newParent;
     }
 
+    public AvlNode getParent() {
+        return parent;
+    }
+
+    public AvlNode getRightChild(){
+        return rightChild;
+    }
+
+    public AvlNode getLeftChild(){
+        return leftChild;
+    }
+
     public int findNodeBalance(){
         int[] subHeights = findSubHeights();
         return (subHeights[LEFT_SUBHEIGHT] - subHeights[RIGHT_SUBHEIGHT]);
