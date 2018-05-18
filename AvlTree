@@ -136,9 +136,9 @@ public class AvlTree extends BinarySearchTree {
         newRoot.setRightChild(root);
         root.setLeftChild(newRightChildOfRoot);
 
-        //Adjust heights
-        newRoot.setNodeHeight(-1);
-        root.setNodeHeight(1);
+//        //Adjust heights
+//        newRoot.setNodeHeight(-1);
+//        root.setNodeHeight(1);
     }
 
 
@@ -152,8 +152,8 @@ public class AvlTree extends BinarySearchTree {
         root.setRightChild(newLeftChildOfRoot);
 
         //Adjust heights
-        newRoot.setNodeHeight(-1);
-        root.setNodeHeight(1);
+//        newRoot.setNodeHeight(-1);
+//        root.setNodeHeight(1);
 
     }
 
