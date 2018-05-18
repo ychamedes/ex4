@@ -1,3 +1,5 @@
+package oop.ex4.data_structures;
+
 public class AvlTree extends BinarySearchTree {
 
     private final static int NEGATIVE_CONTAINS_RESULT = -1;
@@ -29,7 +31,6 @@ public class AvlTree extends BinarySearchTree {
      * @param tree the AvlTree to be deep-copied
      */
     public AvlTree(AvlTree tree){
-
     }
 
     /**
@@ -38,9 +39,15 @@ public class AvlTree extends BinarySearchTree {
      * @return True if the value was added successfully, false otherwise
      */
     public boolean add(int newValue){
-        if(contains(newValue) != NEGATIVE_CONTAINS_RESULT) {
-            AvlNode addedNode = addNode(root, newValue);
-            rebalanceNode(addedNode, newValue);
+        if(contains(newValue) == NEGATIVE_CONTAINS_RESULT) {
+            if(root == null){
+                root = new AvlNode();
+                root.setData(newValue);
+            }
+            else {
+                AvlNode addedNode = addNode(root, newValue);
+                rebalanceNode(addedNode, newValue);
+            }
             return true;
         }
         else{
@@ -55,10 +62,10 @@ public class AvlTree extends BinarySearchTree {
             return node;
         }
         else if(node.getData() > addValue){
-            return(addNode(node.getRightChild(), addValue));
+            return(addNode(node.getLeftChild(), addValue));
         }
         else{
-            return(addNode(node.getLeftChild(), addValue));
+            return(addNode(node.getRightChild(), addValue));
         }
     }
 
@@ -134,7 +141,7 @@ public class AvlTree extends BinarySearchTree {
         root.setNodeHeight(1);
     }
 
-    
+
     private void rotateRight(AvlNode root){
         //Set new references
         AvlNode newRoot = root.getRightChild();
@@ -152,7 +159,22 @@ public class AvlTree extends BinarySearchTree {
 
 
     public static void main(java.lang.String[] args){
-
+        int[] newData = {3, 6, 2, 1, 4, 5};
+        AvlTree avlT = new AvlTree(newData);
+//        AvlNode current = avlT.root;
+//        while(current != null){
+//            System.out.println(current.getData());
+//            System.out.println(current.findNodeBalance());
+//            System.out.println(current.getNodeHeight());
+//            current = current.getLeftChild();
+//        }
+//        AvlNode current2 = avlT.root;
+//        while(current2 != null){
+//            System.out.println(current2.getData());
+//            System.out.println(current2.findNodeBalance());
+//            System.out.println(current2.getNodeHeight());
+//            current = current2.getRightChild();/
+        //}
     }
 
 }
