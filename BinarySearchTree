@@ -1,8 +1,10 @@
+package oop.ex4.data_structures;
+
 import java.util.Iterator;
 
 public abstract class BinarySearchTree implements Iterable<Integer> {
 
-    protected TreeNode root = new TreeNode();
+    protected TreeNode root;
 
     protected final static int NEGATIVE_CONTAINS_RESULT = -1;
 
