@@ -1,12 +1,15 @@
-public class AvlNode {
+package oop.ex4.data_structures;
 
-    private int data;
+public class AvlNode extends oop.ex4.data_structures.TreeNode {
+
+    private static final int LEFT_SUBHEIGHT = 0;
+    private static final int RIGHT_SUBHEIGHT = 1;
+
+    private int balance;
+
     private AvlNode parent;
     private AvlNode rightChild;
     private AvlNode leftChild;
-    private int nodeDepth;
-    private int nodeHeight;
-    private int balance;
 
     /**
      * A default constructor for the AvlNode class
@@ -15,16 +18,25 @@ public class AvlNode {
 
     }
 
-    public int getData(){
-        return data;
-    }
-
-    public int getNodeDepth(){
-        return nodeDepth;
-    }
 
     public int getNodeHeight(){
-        return nodeHeight;
+        int[] subHeights = findSubHeights();
+        return Math.max(subHeights[LEFT_SUBHEIGHT], subHeights[RIGHT_SUBHEIGHT]);
+    }
+
+    public void setNodeHeight(int heightChange){
+        nodeHeight += heightChange;
+    }
+
+
+    public void setRightChild(AvlNode newRightChild){
+        rightChild = newRightChild;
+        rightChild.setParent(this);
+    }
+
+    public void setLeftChild(AvlNode newLeftChild){
+        leftChild = newLeftChild;
+        leftChild.setParent(this);
     }
 
     public AvlNode getParent() {
@@ -39,25 +51,19 @@ public class AvlNode {
         return leftChild;
     }
 
-    public void setData(int newData){
-        data = newData;
-    }
-
-    public void setParent(AvlNode newParent){
-
-    }
-
-    public void setRightChild(AvlNode newRightChild){
-        rightChild = newRightChild;
-        rightChild.setParent(this);
-    }
-
-    public void setLeftChild(AvlNode newLeftChild){
-        leftChild = newLeftChild;
-        leftChild.setParent(this);
-    }
-
     public int findNodeBalance(){
-        return(leftChild.getNodeHeight() - rightChild.getNodeHeight());
+        int[] subHeights = findSubHeights();
+        return (subHeights[LEFT_SUBHEIGHT] - subHeights[RIGHT_SUBHEIGHT]);
+    }
+
+    private int[] findSubHeights(){
+        int[] subHeightArr = new int[2];
+        if(leftChild != null){
+            subHeightArr[LEFT_SUBHEIGHT] = leftChild.getNodeHeight() + 1;
+        }
+        if(rightChild != null) {
+            subHeightArr[RIGHT_SUBHEIGHT] = rightChild.getNodeHeight() + 1;
+        }
+        return subHeightArr;
     }
 }
