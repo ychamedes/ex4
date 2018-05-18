@@ -9,6 +9,7 @@ public abstract class TreeNode {
     protected TreeNode parent;
     protected TreeNode rightChild;
     protected TreeNode leftChild;
+    protected int nodeDepth;
 
     /**
      * A default constructor for the TreeNode class
