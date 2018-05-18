@@ -41,7 +41,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      */
     private int containsHelper(TreeNode node, int searchVal) {
         if (node == null) return NEGATIVE_CONTAINS_RESULT;
-        else if (node.getData() == searchVal) return node.getNodeDepth();
+        else if (node.getData() == searchVal) return (root.getNodeHeight() - node.getNodeHeight());
 
         /* Check if current key is larger or greater than search value. */
         if (node.getData() < searchVal) return containsHelper(node.getRightChild(), searchVal);
@@ -56,7 +56,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         int counter = 0;
         Iterator iterator = iterator();
 
-        while (iterator.hasNext()){
+        while(iterator.hasNext()){
             counter++;
             iterator.next();
         }
