@@ -131,6 +131,7 @@ public class AvlTree extends BinarySearchTree {
     }
 
     private AvlNode deleteNode(AvlNode targetNode){
+        AvlNode targetParent = targetNode.getParent();
         AvlNode leftChildOfTarget = targetNode.getLeftChild();
         AvlNode rightChildofTarget = targetNode.getRightChild();
         boolean leftNull = (leftChildOfTarget == null);
@@ -140,15 +141,17 @@ public class AvlTree extends BinarySearchTree {
         // Check which children target has, if any
         if(leftNull){
             if(rightNull){ //Target has no children
-                AvlNode targetParent = targetNode.getParent();
                 targetNode = null;
                 return targetParent;
             }
-            else // Target only has right child
+            else {// Target only has right child
                 targetNode = rightChildofTarget;
+                targetNode.setParent(targetParent);
+            }
         }
         else if(rightNull){ // Target only has left child
             targetNode = leftChildOfTarget;
+            targetNode.setParent(targetParent);
         }
         else { // Target has two children
             Iterator<Integer> treeIter = this.iterator();
