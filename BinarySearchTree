@@ -8,6 +8,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
 
     protected final static int NEGATIVE_CONTAINS_RESULT = -1;
 
+
     /**
      * Take an integer and add it to the Avl tree
      * @param newValue the integer value to be added
@@ -86,7 +87,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
     }
 
     private TreeNode treeSuccessor(TreeNode node) {
-        if (node.getRightChild() != null) return treeMinimum(node.getRightChild());
+        if (node.hasRightChild()) return treeMinimum(node.getRightChild());
         TreeNode otherNode = node.getParent();
 
         while (otherNode != null && node == otherNode.getRightChild()){
@@ -96,8 +97,11 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         return otherNode;
     }
 
-    private TreeNode treeMinimum(TreeNode node) {
-        while (node.getLeftChild() != null) {
+    private TreeNode treeMinimum(TreeNode node){
+        if(node == null){
+            return node;
+        }
+        while (node.hasLeftChild()) {
             node = node.getLeftChild();
         }
         return node;
