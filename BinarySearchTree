@@ -31,7 +31,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
      */
     public int contains(int searchVal){
-        return containsHelper(root, searchVal);
+        return containsHelper(root, searchVal, 0);
     }
 
     /**
@@ -39,13 +39,13 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @param searchVal the integer value to be searched for.
      * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
      */
-    private int containsHelper(TreeNode node, int searchVal) {
+    private int containsHelper(TreeNode node, int searchVal, int depth) {
         if (node == null) return NEGATIVE_CONTAINS_RESULT;
-        else if (node.getData() == searchVal) return (root.getNodeHeight() - node.getNodeHeight());
+        else if (node.getData() == searchVal) return (depth);
 
         /* Check if current key is larger or greater than search value. */
-        if (node.getData() < searchVal) return containsHelper(node.getRightChild(), searchVal);
-        else return containsHelper(node.getLeftChild(), searchVal);
+        if (node.getData() < searchVal) return containsHelper(node.getRightChild(), searchVal, depth+1);
+        else return containsHelper(node.getLeftChild(), searchVal, depth+1);
     }
 
     /**
@@ -70,24 +70,39 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
     public java.util.Iterator<Integer> iterator(){
 
         class BSTIterator implements Iterator<Integer>{
-            TreeNode current = root;
+            TreeNode current = TreeMinimum(root);
 
             @Override
             public boolean hasNext() {
-                if (current == null) return false;
-                else return current.getData() != next();
+                if (current == null || TreeSuccessor(current) == null) return false;
+                else return true;
             }
 
             @Override
             public Integer next() {
-                if (current.getLeftChild() != null) current = current.getLeftChild();
-                else if (current.getRightChild() != null) current = current.getRightChild();
-                else current = current.getParent();
-
+                current = TreeSuccessor(current);
                 return current.getData();
             }
         }
 
         return new BSTIterator();
+    }
+
+    private TreeNode TreeSuccessor(TreeNode node) {
+        if (node.getRightChild() != null) return TreeMinimum(node.getRightChild());
+        TreeNode otherNode = node.getParent();
+
+        while (otherNode != null && node == otherNode.getRightChild()){
+            node = otherNode;
+            otherNode = otherNode.getParent();
+        }
+        return otherNode;
+    }
+
+    private TreeNode TreeMinimum(TreeNode node) {
+        while (node.getLeftChild() != null) {
+            node = node.getLeftChild();
+        }
+        return node;
     }
 }
