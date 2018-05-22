@@ -21,18 +21,6 @@ public abstract class TreeNode {
 
     protected abstract TreeNode getLeftChild();
 
-    protected boolean hasLeftChild(){
-        return (leftChild != null);
-    }
-
-    protected boolean hasRightChild(){
-        return (rightChild != null);
-    }
-
-    protected boolean hasParent(){
-        return (parent != null);
-    }
-
     public void setData(int newData){
         data = newData;
     }
