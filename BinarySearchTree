@@ -87,7 +87,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
     }
 
     private TreeNode treeSuccessor(TreeNode node) {
-        if (node.hasRightChild()) return treeMinimum(node.getRightChild());
+        if (node.getRightChild() != null) return treeMinimum(node.getRightChild());
         TreeNode otherNode = node.getParent();
 
         while (otherNode != null && node == otherNode.getRightChild()){
@@ -101,7 +101,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         if(node == null){
             return node;
         }
-        while (node.hasLeftChild()) {
+        while (node.getLeftChild() != null) {
             node = node.getLeftChild();
         }
         return node;
