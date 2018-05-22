@@ -5,34 +5,20 @@ public abstract class TreeNode {
     protected static final int LEFT_SUBHEIGHT = 0;
     protected static final int RIGHT_SUBHEIGHT = 1;
 
-    private int data;
-    protected TreeNode parent;
+    protected int data;
     protected TreeNode rightChild;
     protected TreeNode leftChild;
-    protected int nodeDepth;
 
-    /**
-     * A default constructor for the TreeNode class
-     */
-    public TreeNode(){
-
-    }
 
     public int getData(){
         return data;
     }
 
-    public TreeNode getParent() {
-        return parent;
-    }
+    public abstract TreeNode getParent();
 
-    public TreeNode getRightChild(){
-        return rightChild;
-    }
+    public abstract TreeNode getRightChild();
 
-    public TreeNode getLeftChild(){
-        return leftChild;
-    }
+    public abstract TreeNode getLeftChild();
 
     public void setData(int newData){
         data = newData;
