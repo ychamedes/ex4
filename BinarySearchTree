@@ -4,10 +4,11 @@ import java.util.Iterator;
 
 public abstract class BinarySearchTree implements Iterable<Integer> {
 
+    /** The root of the Binary Search Tree. */
     protected TreeNode root;
 
+    /** Represents false when a queried value is not in the tree. */
     protected final static int NEGATIVE_CONTAINS_RESULT = -1;
-
 
     /**
      * Take an integer and add it to the Avl tree
@@ -86,6 +87,11 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         return new BSTIterator();
     }
 
+    /**
+     * Finds the successor (next smallest) node to the current node.
+     * @param node the current node being analyzed.
+     * @return the successor node.
+     */
     private TreeNode treeSuccessor(TreeNode node) {
         if (node.getRightChild() != null) return treeMinimum(node.getRightChild());
         TreeNode otherNode = node.getParent();
@@ -97,6 +103,11 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         return otherNode;
     }
 
+    /**
+     * Find the "smallest" (has most minimal value) node in the tree.
+     * @param node the "root" of the tree being analyzed.
+     * @return the smallest node in the tree.
+     */
     private TreeNode treeMinimum(TreeNode node){
         if(node == null){
             return node;
