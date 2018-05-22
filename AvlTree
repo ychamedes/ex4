@@ -4,8 +4,6 @@ import java.util.Iterator;
 
 public class AvlTree extends BinarySearchTree {
 
-    private final static int NEGATIVE_CONTAINS_RESULT = -1;
-
     protected AvlNode root;
 
     /**
