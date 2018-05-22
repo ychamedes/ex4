@@ -31,6 +31,16 @@ public class AvlTree extends BinarySearchTree {
      * @param tree the AvlTree to be deep-copied
      */
     public AvlTree(AvlTree tree){
+        if(tree == null){
+
+        }
+        else{
+            Iterator<Integer> treeIter= tree.iterator();
+            AvlTree copyTree = new AvlTree();
+            while(treeIter.hasNext()){
+                copyTree.add(treeIter.next());
+            }
+        }
     }
 
     /**
