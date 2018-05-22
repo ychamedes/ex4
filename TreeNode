@@ -1,44 +1,21 @@
 package oop.ex4.data_structures;
 
-public abstract class TreeNode {
+public interface TreeNode {
 
-    protected static final int LEFT_SUBHEIGHT = 0;
-    protected static final int RIGHT_SUBHEIGHT = 1;
+    void setRightChild(AvlNode newRightChild);
 
-    protected int data;
-    protected TreeNode parent;
-    protected TreeNode rightChild;
-    protected TreeNode leftChild;
+    void setLeftChild(AvlNode newLeftChild);
 
+    void setParent(AvlNode newParent);
 
-    public int getData(){
-        return data;
-    }
+    AvlNode getParent();
 
-    protected abstract TreeNode getParent();
+    AvlNode getRightChild();
 
-    protected abstract TreeNode getRightChild();
+    AvlNode getLeftChild();
 
-    protected abstract TreeNode getLeftChild();
+    void setData(int newData);
 
-    public void setData(int newData){
-        data = newData;
-    }
-
-    public int getNodeHeight(){
-        int[] subHeights = findSubHeights();
-        return Math.max(subHeights[LEFT_SUBHEIGHT], subHeights[RIGHT_SUBHEIGHT]);
-    }
-
-    protected int[] findSubHeights(){
-        int[] subHeightArr = new int[2];
-        if(leftChild != null){
-            subHeightArr[LEFT_SUBHEIGHT] = leftChild.getNodeHeight() + 1;
-        }
-        if(rightChild != null) {
-            subHeightArr[RIGHT_SUBHEIGHT] = rightChild.getNodeHeight() + 1;
-        }
-        return subHeightArr;
-    }
+    int getData();
 
 }
