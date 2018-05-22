@@ -8,10 +8,20 @@ public class AvlNode extends oop.ex4.data_structures.TreeNode {
     private AvlNode leftChild;
 
     /**
-     * A default constructor for the AvlNode class
+     * A constructor for the AvlNode class. This constructor should only be used for the root
      */
-    public AvlNode(){
+    public AvlNode(int setData){
+        data = setData;
+        parent = null;
+        rightChild = null;
+        leftChild = null;
+    }
 
+    public AvlNode(int setData, AvlNode setParent){
+        data = setData;
+        parent = setParent;
+        rightChild = null;
+        leftChild = null;
     }
 
     public void setRightChild(AvlNode newRightChild){
