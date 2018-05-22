@@ -140,8 +140,9 @@ public class AvlTree extends BinarySearchTree {
         // Check which children target has, if any
         if(leftNull){
             if(rightNull){ //Target has no children
+                AvlNode targetParent = targetNode.getParent();
                 targetNode = null;
-                return targetNode;
+                return targetParent;
             }
             else // Target only has right child
                 targetNode = rightChildofTarget;
