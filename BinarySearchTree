@@ -8,9 +8,6 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
 
     protected final static int NEGATIVE_CONTAINS_RESULT = -1;
 
-    public BinarySearchTree() {
-    }
-
     /**
      * Take an integer and add it to the Avl tree
      * @param newValue the integer value to be added
@@ -70,17 +67,17 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
     public java.util.Iterator<Integer> iterator(){
 
         class BSTIterator implements Iterator<Integer>{
-            TreeNode current = TreeMinimum(root);
+            TreeNode current = treeMinimum(root);
 
             @Override
             public boolean hasNext() {
-                if (current == null || TreeSuccessor(current) == null) return false;
+                if (current == null || treeSuccessor(current) == null) return false;
                 else return true;
             }
 
             @Override
             public Integer next() {
-                current = TreeSuccessor(current);
+                current = treeSuccessor(current);
                 return current.getData();
             }
         }
@@ -88,8 +85,8 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         return new BSTIterator();
     }
 
-    private TreeNode TreeSuccessor(TreeNode node) {
-        if (node.getRightChild() != null) return TreeMinimum(node.getRightChild());
+    private TreeNode treeSuccessor(TreeNode node) {
+        if (node.getRightChild() != null) return treeMinimum(node.getRightChild());
         TreeNode otherNode = node.getParent();
 
         while (otherNode != null && node == otherNode.getRightChild()){
@@ -99,7 +96,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         return otherNode;
     }
 
-    private TreeNode TreeMinimum(TreeNode node) {
+    private TreeNode treeMinimum(TreeNode node) {
         while (node.getLeftChild() != null) {
             node = node.getLeftChild();
         }
