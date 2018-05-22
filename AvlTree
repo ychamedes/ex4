@@ -69,6 +69,10 @@ public class AvlTree extends BinarySearchTree {
     private AvlNode addNode(AvlNode node, AvlNode parent, int addValue){
         if(node == null){
             node = new AvlNode(addValue, parent);
+            if(addValue > parent.getData())
+                parent.setRightChild(node);
+            else
+                parent.setLeftChild(node);
             return node;
         }
         else if(node.getData() > addValue){
@@ -99,7 +103,7 @@ public class AvlTree extends BinarySearchTree {
                 rotateLeft(node);
             }
         }
-        if(node.hasParent()){
+        if(node.getParent() != null){
             rebalanceNode(node.getParent(), addValue);
         }
     }
