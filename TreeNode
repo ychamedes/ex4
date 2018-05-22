@@ -2,20 +2,48 @@ package oop.ex4.data_structures;
 
 public interface TreeNode {
 
-    void setRightChild(AvlNode newRightChild);
+    /**
+     * Connects a node with another node (its parent), as that node's right child.
+     * @param newRightChild the node to be assigned as the right child.
+     */
+    void setRightChild(TreeNode newRightChild);
 
-    void setLeftChild(AvlNode newLeftChild);
+    /**
+     * Connects a node with another node (its parent), as that node's left child.
+     * @param newLeftChild the node to be assigned as the left child.
+     */
+    void setLeftChild(TreeNode newLeftChild);
 
-    void setParent(AvlNode newParent);
+    /**
+     * Connects a node with another node (its child), as that node's parent.
+     * @param newParent the nodes to be assigned the parent.
+     */
+    void setParent(TreeNode newParent);
 
-    AvlNode getParent();
+    /**
+     * @return the node's parent node.
+     */
+    TreeNode getParent();
 
-    AvlNode getRightChild();
+    /**
+     * @return the node's right child node.
+     */
+    TreeNode getRightChild();
 
-    AvlNode getLeftChild();
+    /**
+     * @return the node's left child node.
+     */
+    TreeNode getLeftChild();
 
+    /**
+     * Sets the value (an integer) of the node's data.
+     * @param newData the value to be set.
+     */
     void setData(int newData);
 
+    /**
+     * @return the value of the node's data.
+     */
     int getData();
 
 }
