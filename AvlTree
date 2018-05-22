@@ -53,11 +53,10 @@ public class AvlTree extends BinarySearchTree {
     public boolean add(int newValue){
         if(contains(newValue) == NEGATIVE_CONTAINS_RESULT) {
             if(root == null){
-                root = new AvlNode();
-                root.setData(newValue);
+                root = new AvlNode(newValue);
             }
             else {
-                AvlNode addedNode = addNode(root, newValue);
+                AvlNode addedNode = addNode(root, root, newValue);
                 rebalanceNode(addedNode, newValue);
             }
             return true;
@@ -67,17 +66,16 @@ public class AvlTree extends BinarySearchTree {
         }
     }
 
-    private AvlNode addNode(AvlNode node, int addValue){
+    private AvlNode addNode(AvlNode node, AvlNode parent, int addValue){
         if(node == null){
-            node = new AvlNode();
-            node.setData(addValue);
+            node = new AvlNode(addValue, parent);
             return node;
         }
         else if(node.getData() > addValue){
-            return(addNode(node.getLeftChild(), addValue));
+            return(addNode(node.getLeftChild(), node, addValue));
         }
         else{
-            return(addNode(node.getRightChild(), addValue));
+            return(addNode(node.getRightChild(), node, addValue));
         }
     }
 
@@ -101,7 +99,7 @@ public class AvlTree extends BinarySearchTree {
                 rotateLeft(node);
             }
         }
-        if(node.getParent() != null){
+        if(node.hasParent()){
             rebalanceNode(node.getParent(), addValue);
         }
     }
@@ -227,6 +225,33 @@ public class AvlTree extends BinarySearchTree {
 
     }
 
+//    public static void printNode(AvlNode node){
+//        System.out.println(node.getData());
+//    }
+//
+//    public static void printTree(AvlNode node){
+//        printTree(true,"", node.getRightChild());
+//        printNode(node);
+//        printTree(false,"", node.getLeftChild());
+//    }
+//
+//    public static void printTree(boolean isRight, String indent, AvlNode node){
+//        AvlNode rightNode = null;
+//        if(node.hasRightChild())
+//            rightNode = node.getRightChild();
+//        if (rightNode != null) {
+//            printTree(true, indent + (isRight ? "        " : " |      "), rightNode);
+//        }
+//        System.out.print(indent);
+//        if (isRight) System.out.print(" /");
+//        else System.out.print(" \\");
+//        System.out.print("----- ");
+//        printNode(node);
+//        AvlNode leftNode = node.getLeftChild();
+//        if (leftNode != null) {
+//            printTree(false, indent + (isRight ? " |      " : "        "), leftNode);
+//        }
+//    }
 
     public static void main(java.lang.String[] args){
 
