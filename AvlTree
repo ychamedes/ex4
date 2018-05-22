@@ -207,6 +207,13 @@ public class AvlTree extends BinarySearchTree {
 
 
     private void rotateRight(AvlNode root){
+        //Set new references
+        AvlNode newRoot = root.getRightChild();
+        AvlNode newLeftChildOfRoot = newRoot.getLeftChild();
+
+        //Rotate root
+        newRoot.setLeftChild(root);
+        root.setRightChild(newLeftChildOfRoot);
 
     }
 
