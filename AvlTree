@@ -204,13 +204,17 @@ public class AvlTree extends BinarySearchTree {
     }
 
     private void rotateLeft(AvlNode root){
-        //Set new references
-        AvlNode newRoot = root.getLeftChild();
-        AvlNode newRightChildOfRoot = newRoot.getRightChild();
+        if (root.getLeftChild() != null) {
+            //Set new references
+            AvlNode newRoot = root.getLeftChild();
+            AvlNode newRightChildOfRoot = null;
+            if (newRoot.getRightChild() != null) newRightChildOfRoot = newRoot.getRightChild();
 
-        //Rotate root
-        newRoot.setRightChild(root);
-        root.setLeftChild(newRightChildOfRoot);
+            //Rotate root
+            newRoot.setRightChild(root);
+            root.setLeftChild(newRightChildOfRoot);
+
+        }
 
 //        //Adjust heights
 //        newRoot.setNodeHeight(-1);
@@ -219,14 +223,16 @@ public class AvlTree extends BinarySearchTree {
 
 
     private void rotateRight(AvlNode root){
-        //Set new references
-        AvlNode newRoot = root.getRightChild();
-        AvlNode newLeftChildOfRoot = newRoot.getLeftChild();
+        if (root.getRightChild() != null){
+            //Set new references
+            AvlNode newRoot = root.getRightChild();
+            AvlNode newLeftChildOfRoot = null;
+            if (newRoot.getLeftChild() != null) newLeftChildOfRoot = newRoot.getLeftChild();
 
-        //Rotate root
-        newRoot.setLeftChild(root);
-        root.setRightChild(newLeftChildOfRoot);
-
+            //Rotate root
+            newRoot.setLeftChild(root);
+            root.setRightChild(newLeftChildOfRoot);
+        }
     }
 
 //    public static void printNode(AvlNode node){
