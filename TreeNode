@@ -6,6 +6,7 @@ public abstract class TreeNode {
     protected static final int RIGHT_SUBHEIGHT = 1;
 
     protected int data;
+    protected TreeNode parent;
     protected TreeNode rightChild;
     protected TreeNode leftChild;
 
@@ -14,11 +15,23 @@ public abstract class TreeNode {
         return data;
     }
 
-    public abstract TreeNode getParent();
+    protected abstract TreeNode getParent();
 
-    public abstract TreeNode getRightChild();
+    protected abstract TreeNode getRightChild();
 
-    public abstract TreeNode getLeftChild();
+    protected abstract TreeNode getLeftChild();
+
+    protected boolean hasLeftChild(){
+        return (leftChild != null);
+    }
+
+    protected boolean hasRightChild(){
+        return (rightChild != null);
+    }
+
+    protected boolean hasParent(){
+        return (parent != null);
+    }
 
     public void setData(int newData){
         data = newData;
