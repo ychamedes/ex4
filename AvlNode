@@ -70,20 +70,20 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         return (subHeights[LEFT_SUB_HEIGHT] - subHeights[RIGHT_SUB_HEIGHT]);
     }
 
+    public int[] findSubHeights(){
+        int[] subHeightArr = new int[2];
+        if(this.getLeftChild() != null){
+            subHeightArr[LEFT_SUB_HEIGHT] = this.getLeftChild().getNodeHeight() + 1;
+        }
+        if(this.getRightChild() != null) {
+            subHeightArr[RIGHT_SUB_HEIGHT] = this.getRightChild().getNodeHeight() + 1;
+        }
+        return subHeightArr;
+    }
+
     public int getNodeHeight(){
         int[] subHeights = findSubHeights();
         return Math.max(subHeights[LEFT_SUB_HEIGHT], subHeights[RIGHT_SUB_HEIGHT]);
-    }
-
-    public int[] findSubHeights(){
-        int[] subHeightArr = new int[2];
-        if(leftChild != null){
-            subHeightArr[LEFT_SUB_HEIGHT] = leftChild.getNodeHeight() + 1;
-        }
-        if(rightChild != null) {
-            subHeightArr[RIGHT_SUB_HEIGHT] = rightChild.getNodeHeight() + 1;
-        }
-        return subHeightArr;
     }
 
 
