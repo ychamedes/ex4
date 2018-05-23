@@ -57,14 +57,29 @@ public class AvlTree extends BinarySearchTree {
      * @return True if the value was added successfully, false otherwise
      */
     public boolean add(int newValue) {
+        System.out.println("CURRENT STRUCTURE");
+        AvlNode current = root;
+        while(current != null){
+            System.out.println(current.getData());
+            if(current.leftChild != null) {
+                System.out.println("Left child: " + current.leftChild.getData() + "Parent " + current
+                        .leftChild.getParent().getData());
+                if(current.leftChild.leftChild != null)
+                    System.out.println("Left left: " + current.leftChild.leftChild.getData() + "Parent: " +
+                            current
+                            .leftChild.leftChild.getParent().getData());
+                if(current.leftChild.rightChild != null)
+                    System.out.println("Left Right: " + current.leftChild.rightChild.getData() + "Parent: " +
+                            current.leftChild.rightChild.getParent().getData());
+            }
+
+            current = current.rightChild;
+        }
 
         System.out.println("ADDING " + newValue);
-        if(newValue == 238){
-            System.out.println(contains(119));
-        }
+
         if (contains(newValue) == NEGATIVE_CONTAINS_RESULT) {
             if (root == null) {
-                System.out.println("gotcha!");
                 root = new AvlNode(newValue);
             }
             else {
@@ -85,17 +100,21 @@ public class AvlTree extends BinarySearchTree {
             return node;
         }
         else if(node.getData() > addValue){
-            node.setNodeHeight();
+            //node.setNodeHeight();
+            node.increaseHeight();
             return(addNode(node.getLeftChild(), node, addValue));
         }
         else{
-            node.setNodeHeight();
+            //node.setNodeHeight();
+            node.increaseHeight();
             return(addNode(node.getRightChild(), node, addValue));
         }
     }
 
     private void rebalanceNode(AvlNode node, int addValue){
+        boolean print = (node.getData() == 0);
         int balance = node.findNodeBalance();
+        if(print) System.out.println(balance + "root balance");
         // Left subtree is bigger.
         if(balance > 1){
             if(addValue < node.getLeftChild().getData()){
@@ -108,7 +127,7 @@ public class AvlTree extends BinarySearchTree {
         }
         // Right subtree is bigger.
         else if(balance < -1){
-//            rotateRight(node);
+            if (print) System.out.println("attempting rotate on root");
             if(addValue > node.getRightChild().getData()){
                 rotateRight(node);
             }
@@ -220,6 +239,9 @@ public class AvlTree extends BinarySearchTree {
     }
 
     private void rotateLeft(AvlNode rotateRoot){
+        System.out.println("rotate left on " + rotateRoot.getData());
+        boolean printzero = (rotateRoot.getData() == 0);
+        if(printzero) System.out.println(rotateRoot.findNodeBalance() + " zero balance");
         if (rotateRoot.getLeftChild() != null) {
             //Set new references
             AvlNode newRoot = rotateRoot.getLeftChild(); // The left child is being pulled up.
@@ -243,6 +265,7 @@ public class AvlTree extends BinarySearchTree {
 
 
     private void rotateRight(AvlNode rotateRoot){
+        System.out.println("rotate right on" + rotateRoot.getData());
         if (rotateRoot.getRightChild() != null){
             //Set new references
             AvlNode newRoot = rotateRoot.getRightChild();
@@ -251,6 +274,8 @@ public class AvlTree extends BinarySearchTree {
 
             //Rotate root
             newRoot.setChild(rotateRoot);
+            System.out.println(rotateRoot.getData() + " asks " + rotateRoot.getParent().getData() + "Are " +
+                            "you my mommy?");
             rotateRoot.setChild(newLeftChildOfRoot);
             if (newRootParent == null){
                 newRoot.setParent(null);
@@ -265,33 +290,35 @@ public class AvlTree extends BinarySearchTree {
         }
     }
 
-    public void printNode(AvlNode node){
-        System.out.println(node.getData());
-    }
-
-    public void printTree(AvlNode node){
-        printTree(true,"", node.getRightChild());
-        printNode(node);
-        printTree(false,"", node.getLeftChild());
-    }
-
-    public void printTree(boolean isRight, String indent, AvlNode node){
-        AvlNode rightNode = null;
-        if(node.getRightChild() != null)
-            rightNode = node.getRightChild();
-        if (rightNode != null) {
-            printTree(true, indent + (isRight ? "        " : " |      "), rightNode);
-        }
-        System.out.print(indent);
-        if (isRight) System.out.print(" /");
-        else System.out.print(" \\");
-        System.out.print("----- ");
-        printNode(node);
-        AvlNode leftNode = node.getLeftChild();
-        if (leftNode != null) {
-            printTree(false, indent + (isRight ? " |      " : "        "), leftNode);
-        }
-    }
+//    public void printNode(AvlNode node){
+//        System.out.println(node.getData());
+//    }
+//
+//    public void printTree(AvlNode node){
+//        if(node.rightChild != null)
+//            printTree(true,"", node.rightChild);
+//        printNode(node);
+//        if(node.leftChild != null)
+//            printTree(false,"", node.leftChild);
+//    }
+//
+//    public void printTree(boolean isRight, String indent, AvlNode node){
+//        AvlNode rightNode = null;
+//        if(node.getRightChild() != null)
+//            rightNode = node.getRightChild();
+//        if (rightNode != null) {
+//            printTree(true, indent + (isRight ? "        " : " |      "), rightNode);
+//        }
+//        System.out.print(indent);
+//        if (isRight) System.out.print(" /");
+//        else System.out.print(" \\");
+//        System.out.print("----- ");
+//        printNode(node);
+//        AvlNode leftNode = node.getLeftChild();
+//        if (leftNode != null) {
+//            printTree(false, indent + (isRight ? " |      " : "        "), leftNode);
+//        }
+//    }
 
     public static void main(java.lang.String[] args){
 
