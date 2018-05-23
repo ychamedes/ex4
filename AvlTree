@@ -4,8 +4,7 @@ import java.util.Iterator;
 
 public class AvlTree extends BinarySearchTree {
 
-
-    protected AvlNode root;
+    AvlNode root;
 
     /**
      * The default constructor for the AvlTree class
@@ -25,6 +24,9 @@ public class AvlTree extends BinarySearchTree {
                 add(newValue);
             }
         }
+        else{
+            root = null;
+        }
     }
 
     /**
@@ -33,7 +35,7 @@ public class AvlTree extends BinarySearchTree {
      */
     public AvlTree(AvlTree tree){
         if(tree == null){
-
+            root = null;
         }
         else{
             Iterator<Integer> treeIter= tree.iterator();
@@ -44,15 +46,25 @@ public class AvlTree extends BinarySearchTree {
         }
     }
 
+
+    TreeNode getRoot(){
+        return this.root;
+    }
+
     /**
      * Take an integer and add it to the Avl tree
      * @param newValue the integer value to be added
      * @return True if the value was added successfully, false otherwise
      */
     public boolean add(int newValue) {
+
         System.out.println("ADDING " + newValue);
+        if(newValue == 238){
+            System.out.println(contains(119));
+        }
         if (contains(newValue) == NEGATIVE_CONTAINS_RESULT) {
             if (root == null) {
+                System.out.println("gotcha!");
                 root = new AvlNode(newValue);
             }
             else {
@@ -84,14 +96,12 @@ public class AvlTree extends BinarySearchTree {
 
     private void rebalanceNode(AvlNode node, int addValue){
         int balance = node.findNodeBalance();
-        System.out.println(node.getData() + "'s balance is : " + balance);
         // Left subtree is bigger.
         if(balance > 1){
             if(addValue < node.getLeftChild().getData()){
                 rotateLeft(node);
             }
             else if(addValue > node.getLeftChild().getData()){
-                System.out.println("SHSHSSS");
                 rotateLeft(node.getLeftChild());
                 rotateRight(node);
             }
@@ -103,18 +113,12 @@ public class AvlTree extends BinarySearchTree {
                 rotateRight(node);
             }
             else if(addValue < node.getRightChild().getData()){
-                System.out.println("RIGHTLEFT ROTATION ON " + node.getData());
                 rotateRight(node.getRightChild());
                 rotateLeft(node);
             }
         }
         if(node.getParent() != null){ // If we haven't reached the root.
-            if(root.getParent() != null)
-                System.out.println(root.getParent().getData() + " THIS IS THE ROOTS PARENT");
             rebalanceNode(node.getParent(), addValue);
-        }
-        else{
-            System.out.println("This should be the root");
         }
     }
 
@@ -223,7 +227,6 @@ public class AvlTree extends BinarySearchTree {
             AvlNode newRootParent = rotateRoot.getParent();
 
             //Rotate root
-            System.out.println("the current root is: " + root.getData());
             newRoot.setChild(rotateRoot);
             rotateRoot.setChild(newRightChildOfRoot);
             if (newRootParent == null){
@@ -234,9 +237,7 @@ public class AvlTree extends BinarySearchTree {
 
             //Adjust heights
             newRoot.setNodeHeight();
-            System.out.println(newRoot.getData() + "'s height increased");
             rotateRoot.setNodeHeight();
-            System.out.println(rotateRoot.getData() + "'s height decreased");
         }
     }
 
@@ -249,22 +250,18 @@ public class AvlTree extends BinarySearchTree {
             AvlNode newRootParent = rotateRoot.getParent();
 
             //Rotate root
-            System.out.println("the current root is: " + root.getData());
             newRoot.setChild(rotateRoot);
             rotateRoot.setChild(newLeftChildOfRoot);
             if (newRootParent == null){
                 newRoot.setParent(null);
+                System.out.println("here?");
                 root = newRoot;
             }
             else newRootParent.setChild(newRoot);
 
             //Adjust heights
-            System.out.println(rotateRoot.getHeight() + "current height");
             rotateRoot.setNodeHeight();
-            System.out.println(rotateRoot.getRightChild().getHeight());
-            System.out.println(rotateRoot.getData() + "'s height decreased to " + rotateRoot.getHeight());
             newRoot.setNodeHeight();
-            System.out.println(newRoot.getData() + "'s height increased");
         }
     }
 
