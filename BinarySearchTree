@@ -47,8 +47,12 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
         else if (node.getData() == searchVal) return (depth);
 
         /* Check if current key is larger or greater than search value. */
-        if (node.getData() < searchVal) return containsHelper(node.getRightChild(), searchVal, depth+1);
-        else return containsHelper(node.getLeftChild(), searchVal, depth+1);
+        if (node.getData() < searchVal){
+            return containsHelper(node.getRightChild(), searchVal, depth+1);
+        }
+        else{
+            return containsHelper(node.getLeftChild(), searchVal, depth+1);
+        }
     }
 
     /**
