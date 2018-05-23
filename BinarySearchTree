@@ -4,11 +4,15 @@ import java.util.Iterator;
 
 public abstract class BinarySearchTree implements Iterable<Integer> {
 
-    /** The root of the Binary Search Tree. */
-    protected TreeNode root;
 
     /** Represents false when a queried value is not in the tree. */
     protected final static int NEGATIVE_CONTAINS_RESULT = -1;
+
+    /**
+     *
+     * @return
+     */
+    abstract TreeNode getRoot();
 
     /**
      * Take an integer and add it to the Avl tree
@@ -30,7 +34,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
      */
     public int contains(int searchVal){
-        return containsHelper(root, searchVal, 0);
+        return containsHelper(getRoot(), searchVal, 0);
     }
 
     /**
@@ -69,7 +73,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
     public java.util.Iterator<Integer> iterator(){
 
         class BSTIterator implements Iterator<Integer>{
-            TreeNode current = treeMinimum(root);
+            TreeNode current = treeMinimum(getRoot());
 
             @Override
             public boolean hasNext() {
