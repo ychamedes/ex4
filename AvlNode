@@ -6,8 +6,10 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
 
     private static final int LEFT_SUB_HEIGHT = 0;
     private static final int RIGHT_SUB_HEIGHT = 1;
+    private static final int INITIAL_HEIGHT = 0;
 
     private int data;
+    private int height;
     private AvlNode parent;
     private AvlNode rightChild;
     private AvlNode leftChild;
@@ -21,6 +23,7 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         parent = null;
         rightChild = null;
         leftChild = null;
+        height = INITIAL_HEIGHT;
     }
 
     /**
@@ -33,6 +36,22 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         parent = setParent;
         rightChild = null;
         leftChild = null;
+        height = INITIAL_HEIGHT;
+    }
+
+    public void setChild(TreeNode newChild){
+        if (newChild != null){
+            if (newChild.getData() > this.data){
+                System.out.println(this.data + "'s new right child is " + newChild.getData());
+                rightChild = (AvlNode) newChild;
+                rightChild.setParent(this);
+            }
+            else if (newChild.getData() < this.data){
+                System.out.println(this.data + "'s new left child is " + newChild.getData());
+                leftChild = (AvlNode) newChild;
+                leftChild.setParent(this);
+            }
+        }
     }
 
     @Override
@@ -81,37 +100,40 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         return data;
     }
 
-    /**
-     * Calculates the node's balance by measuring the difference in height of its two subtrees.
-     * @return the value of the node's balance.
-     */
+    @Override
+    public int getHeight(){
+        return height;
+    }
+
     public int findNodeBalance(){
-        int[] subHeights = findSubHeights();
-        return (subHeights[LEFT_SUB_HEIGHT] - subHeights[RIGHT_SUB_HEIGHT]);
-    }
+        int leftHeight = 0;
+        int rightHeight = 0;
 
-    /**
-     * Calculates the height of both the node's subtrees.
-     * @return an array where the first value is the left subtree's height, and the second is the right's.
-     */
-    public int[] findSubHeights(){
-        int[] subHeightArr = new int[2];
-        if(this.getLeftChild() != null){
-            subHeightArr[LEFT_SUB_HEIGHT] = this.getLeftChild().getNodeHeight() + 1;
+        if (leftChild != null){
+            leftHeight = leftChild.getHeight() + 1;
         }
-        if(this.getRightChild() != null) {
-            subHeightArr[RIGHT_SUB_HEIGHT] = this.getRightChild().getNodeHeight() + 1;
+        if (rightChild != null){
+            rightHeight = rightChild.getHeight() + 1;
         }
-        return subHeightArr;
+
+        System.out.println(data + "'s" + leftHeight + "left height");
+        System.out.println(data + "'s" + rightHeight + "right height");
+        return (leftHeight - rightHeight);
     }
 
-    /**
-     * @return the node's height.
-     */
-    public int getNodeHeight(){
-        int[] subHeights = findSubHeights();
-        return Math.max(subHeights[LEFT_SUB_HEIGHT], subHeights[RIGHT_SUB_HEIGHT]);
-    }
+    public void setNodeHeight(){
+        int leftHeight = -1;
+        int rightHeight = -1;
 
+        if (leftChild != null){
+            leftHeight = leftChild.getHeight() + 1;
+        }
+        if (rightChild != null){
+            rightHeight = rightChild.getHeight() + 1;
+        }
+        System.out.println(leftHeight + " " + rightHeight);
+        height = Math.max(leftHeight, rightHeight) + 1;
+        System.out.println(data + "'s absolute height is " + height);
+    }
 
 }
