@@ -46,4 +46,9 @@ public interface TreeNode {
      */
     int getData();
 
+    /**
+     * @return the node's height.
+     */
+    int getHeight();
+
 }
