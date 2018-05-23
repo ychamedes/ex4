@@ -9,8 +9,8 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
     private int data;
     private int height;
     private AvlNode parent;
-    private AvlNode rightChild;
-    private AvlNode leftChild;
+    public AvlNode rightChild;
+    public AvlNode leftChild;
 
     /**
      * A constructor for the AvlNode class. This constructor should only be used for the root.
@@ -50,21 +50,21 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         }
     }
 
-    @Override
-    public void setRightChild(TreeNode newRightChild){
-        if (newRightChild != null) {
-            rightChild = (AvlNode) newRightChild;
-            rightChild.setParent(this);
-        }
-    }
-
-    @Override
-    public void setLeftChild(TreeNode newLeftChild){
-        if (newLeftChild != null) {
-            leftChild = (AvlNode) newLeftChild;
-            leftChild.setParent(this);
-        }
-    }
+//    @Override
+//    public void setRightChild(TreeNode newRightChild){
+//        if (newRightChild != null) {
+//            rightChild = (AvlNode) newRightChild;
+//            rightChild.setParent(this);
+//        }
+//    }
+//
+//    @Override
+//    public void setLeftChild(TreeNode newLeftChild){
+//        if (newLeftChild != null) {
+//            leftChild = (AvlNode) newLeftChild;
+//            leftChild.setParent(this);
+//        }
+//    }
 
     @Override
     public void setParent(TreeNode newParent){
@@ -102,6 +102,7 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
     }
 
     public int findNodeBalance(){
+        boolean print = (data == 0);
         int leftHeight = 0;
         int rightHeight = 0;
 
@@ -111,11 +112,13 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         if (rightChild != null){
             rightHeight = rightChild.getHeight() + 1;
         }
+        if(print) System.out.println("ROOT LEFT HEIGHT:" + leftHeight + "ROOT RIGHT HEIGHT:" + rightHeight);
 
         return (leftHeight - rightHeight);
     }
 
     public void setNodeHeight(){
+        boolean printzero = (data == 0);
         int leftHeight = -1;
         int rightHeight = -1;
 
@@ -125,7 +128,18 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         if (rightChild != null){
             rightHeight = rightChild.getHeight() + 1;
         }
+        if(printzero)
+            System.out.println(leftHeight + " ZEROLEFT " + rightHeight + " ZERORIGHT");
         height = Math.max(leftHeight, rightHeight) + 1;
     }
+
+    public void increaseHeight(){
+        height++;
+    }
+
+    public void decreaseHeight(){
+        height--;
+    }
+
 
 }
