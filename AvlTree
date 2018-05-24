@@ -23,10 +23,7 @@ public class AvlTree extends BinarySearchTree {
             for (int newValue : data) {
                 add(newValue);
             }
-        }
-        else{
-            root = null;
-        }
+        } else root = null; // No data. Create an empty tree.
     }
 
     /**
@@ -34,21 +31,80 @@ public class AvlTree extends BinarySearchTree {
      * @param tree the AvlTree to be deep-copied
      */
     public AvlTree(AvlTree tree){
-        if(tree == null){
-            root = null;
-        }
-        else{
-            Iterator<Integer> treeIter= tree.iterator();
+        if(tree != null) {
+            Iterator<Integer> treeIter = tree.iterator();
             AvlTree copyTree = new AvlTree();
             while(treeIter.hasNext()){
                 copyTree.add(treeIter.next());
             }
-        }
+        } else root = null; // No tree to copy. Create an empty tree.
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
+    int getBalance(AvlNode node) {
+        if (node == null) return 0;
 
-    TreeNode getRoot(){
+        int leftHeight = 0;
+        int rightHeight = 0;
+
+        if (node.getLeftChild() != null) leftHeight = node.getLeftChild().getHeight();
+        if (node.getRightChild() != null) rightHeight = node.getRightChild().getHeight();
+
+        return leftHeight - rightHeight;
+    }
+
+    @Override
+    public TreeNode getRoot(){
         return this.root;
+    }
+
+    /**
+     * Rotate the node "up" to have its parent as its left subtree.
+     * @param rotateRoot the node being rotated
+     * @return the node which is now the root of the new subtree.
+     */
+    private AvlNode rotateLeft(AvlNode rotateRoot){
+        AvlNode newRoot = rotateRoot.getRightChild();
+        AvlNode newLeftRightChild = newRoot.getLeftChild();
+
+        // Perform rotation
+        // Put the rotated root on the new root's left.
+        newRoot.setLeftChild(rotateRoot);
+        // Turn new root's left subtree into the rotated root's right subtree.
+        rotateRoot.setRightChild(newLeftRightChild);
+
+        //  Update heights
+        rotateRoot.setHeight();
+        newRoot.setHeight();
+
+        return newRoot;
+
+    }
+
+    /**
+     * Rotate the node "up" to have its parent as its right subtree.
+     * @param rotateRoot the node being rotated
+     * @return the node which is now the root of the new subtree.
+     */
+    private AvlNode rotateRight(AvlNode rotateRoot){
+        AvlNode newRoot = rotateRoot.getLeftChild();
+        AvlNode newRightLeftChild = newRoot.getRightChild();
+
+        // Perform rotation
+        // Put the rotated root on the new root's right.
+        newRoot.setRightChild(rotateRoot);
+        // Turn new root's right subtree into the rotated root's left subtree.
+        rotateRoot.setLeftChild(newRightLeftChild);
+
+        // Update heights
+        rotateRoot.setHeight();
+        newRoot.setHeight();
+
+        return newRoot;
     }
 
     /**
@@ -57,88 +113,49 @@ public class AvlTree extends BinarySearchTree {
      * @return True if the value was added successfully, false otherwise
      */
     public boolean add(int newValue) {
-        System.out.println("CURRENT STRUCTURE");
-        AvlNode current = root;
-        while(current != null){
-            System.out.println(current.getData());
-            if(current.leftChild != null) {
-                System.out.println("Left child: " + current.leftChild.getData() + "Parent " + current
-                        .leftChild.getParent().getData());
-                if(current.leftChild.leftChild != null)
-                    System.out.println("Left left: " + current.leftChild.leftChild.getData() + "Parent: " +
-                            current
-                            .leftChild.leftChild.getParent().getData());
-                if(current.leftChild.rightChild != null)
-                    System.out.println("Left Right: " + current.leftChild.rightChild.getData() + "Parent: " +
-                            current.leftChild.rightChild.getParent().getData());
-            }
-
-            current = current.rightChild;
-        }
-
-        System.out.println("ADDING " + newValue);
-
         if (contains(newValue) == NEGATIVE_CONTAINS_RESULT) {
-            if (root == null) {
-                root = new AvlNode(newValue);
-            }
-            else {
-                AvlNode addedNode = addNode(root, root, newValue);
-                rebalanceNode(addedNode, newValue);
-            }
+            root = addNode(root, newValue);
             return true;
         }
-        else{
-            return false;
-        }
+        else return false;
     }
 
-    private AvlNode addNode(AvlNode node, AvlNode parent, int addValue){
-        if(node == null){
-            node = new AvlNode(addValue, parent);
-            parent.setChild(node);
-            return node;
-        }
-        else if(node.getData() > addValue){
-            //node.setNodeHeight();
-            node.increaseHeight();
-            return(addNode(node.getLeftChild(), node, addValue));
-        }
-        else{
-            //node.setNodeHeight();
-            node.increaseHeight();
-            return(addNode(node.getRightChild(), node, addValue));
-        }
-    }
+    private AvlNode addNode(AvlNode node, int addValue){
+        // Standard BST insertion
+        if (node == null)
+            return (new AvlNode(addValue));
 
-    private void rebalanceNode(AvlNode node, int addValue){
-        boolean print = (node.getData() == 0);
-        int balance = node.findNodeBalance();
-        if(print) System.out.println(balance + "root balance");
-        // Left subtree is bigger.
-        if(balance > 1){
-            if(addValue < node.getLeftChild().getData()){
-                rotateLeft(node);
+        // Data to be added is smaller --> go to left subtree
+        if (addValue < node.getData()) node.setLeftChild(addNode(node.getLeftChild(), addValue));
+        // Data to be added is greater --> go to right subtree
+        else if (addValue > node.getData()) node.setRightChild(addNode(node.getRightChild(), addValue));
+        // Data is the same and duplicate keys not allowed
+        else return node;
+
+        // Update height of the current node
+        node.setHeight();
+
+        // Get the balance of the node and check if it is now unbalanced.
+        int balance = getBalance(node);
+
+        if (balance > 1){
+            // Left Left Case
+            if (addValue < node.getLeftChild().getData()) return rotateRight(node);
+            // Left Right Case
+            if (addValue > node.getLeftChild().getData()) {
+                node.setLeftChild(rotateLeft(node.getLeftChild()));
+                return rotateRight(node);
             }
-            else if(addValue > node.getLeftChild().getData()){
-                rotateLeft(node.getLeftChild());
-                rotateRight(node);
+        } else if (balance < -1){
+            // Right Right Case
+            if (addValue > node.getRightChild().getData()) return rotateLeft(node);
+            // Right Left Case
+            if (addValue < node.getRightChild().getData()) {
+                node.setRightChild(rotateRight(node.getRightChild()));
+                return rotateLeft(node);
             }
         }
-        // Right subtree is bigger.
-        else if(balance < -1){
-            if (print) System.out.println("attempting rotate on root");
-            if(addValue > node.getRightChild().getData()){
-                rotateRight(node);
-            }
-            else if(addValue < node.getRightChild().getData()){
-                rotateRight(node.getRightChild());
-                rotateLeft(node);
-            }
-        }
-        if(node.getParent() != null){ // If we haven't reached the root.
-            rebalanceNode(node.getParent(), addValue);
-        }
+        return node; // Balance is fine and the node is unchanged.
     }
 
     /**
@@ -147,72 +164,75 @@ public class AvlTree extends BinarySearchTree {
      * @return True if the value is found and deleted successfully, false otherwise.
      */
     public boolean delete(int toDelete){
-        if(contains(toDelete) != NEGATIVE_CONTAINS_RESULT){
-            if(root.getData() == toDelete){
-                AvlNode deleted = deleteNode(root);
-                rebalanceNode(deleted, toDelete);
-            }
-            else {
-                AvlNode deleted = findDeleteNode(root, toDelete);
-                rebalanceNode(deleted, toDelete);
-            }
+        if (contains(toDelete) != NEGATIVE_CONTAINS_RESULT) {
+            root = deleteNode(root, toDelete);
             return true;
         }
-        else{
-            return false;
-        }
+        else return false;
     }
 
-    private AvlNode findDeleteNode(AvlNode targetNode, int toDelete){
-        if(targetNode.getData() == toDelete){
-            return(deleteNode(targetNode));
+    private AvlNode deleteNode(AvlNode node, int toDelete){
+        // Standard BST deletion
+        if (node == null) return node;
+
+        // Data to be deleted is smaller --> go to left subtree
+        if (toDelete < node.getData()) node.setLeftChild(deleteNode(node.getLeftChild(), toDelete));
+        // Data to be deleted is greater --> go to right subtree
+        else if (toDelete > node.getData())node.setRightChild(deleteNode(node.getRightChild(), toDelete));
+        // Data to be deleted is at the node, so it should be deleted.
+        else {
+            // Node has only one child or no children
+            if ((node.getLeftChild() == null) || (node.getRightChild() == null)) {
+                AvlNode temp = null;
+                if (temp == node.getLeftChild()) temp = node.getRightChild();
+                else temp = node.getLeftChild();
+
+                // No children case
+                if (temp == null) {
+                    temp = node;
+                    node = null;
+                } else node = temp;  // One child case
+            } else {
+                // Node has two children
+                // Get the inorder successor (smallest in the right subtree)
+                AvlNode temp = (AvlNode) treeMinimum(node.getRightChild());
+
+                // Copy the inorder successor's data to this node
+                node.setData(temp.getData());
+                // Delete the inorder successor
+                node.setRightChild(deleteNode(node.getRightChild(), temp.getData()));
+            }
         }
-        else if(targetNode.getData() > toDelete){
-            targetNode.setNodeHeight();
-            return(findDeleteNode(targetNode.getLeftChild(), toDelete));
+
+        // If the tree had only one node then return
+        if (node == null) return node;
+
+        // Update height of the current node
+        node.setHeight();
+
+        // Get the balance of the node and check if it is now unbalanced.
+        int balance = getBalance(node);
+
+        if (balance > 1){
+            // Left Left Case
+            if (getBalance(node.getLeftChild()) >= 0) return rotateRight(node);
+            // Left Right Case
+            if (getBalance(node.getLeftChild()) < 0) {
+                node.setLeftChild(rotateLeft(node.getLeftChild()));
+                return rotateRight(node);
+            }
+        } else if (balance < -1){
+            // Right Right Case
+            if (getBalance(node.getRightChild()) <= 0) return rotateLeft(node);
+            // Right Left Case
+            if (balance < -1 && getBalance(node.getRightChild()) > 0) {
+                node.setRightChild(rotateRight(node.getRightChild()));
+                return rotateLeft(node);
+            }
         }
-        else{
-            targetNode.setNodeHeight();
-            return(findDeleteNode(targetNode.getRightChild(), toDelete));
-        }
+        return node;
     }
 
-    private AvlNode deleteNode(AvlNode targetNode){
-        AvlNode targetParent = targetNode.getParent();
-        AvlNode leftChildOfTarget = targetNode.getLeftChild();
-        AvlNode rightChildOfTarget = targetNode.getRightChild();
-        boolean leftNull = (leftChildOfTarget == null);
-        boolean rightNull = (rightChildOfTarget == null);
-        int targetValue = targetNode.getData();
-
-        // Check which children target has, if any
-        if(leftNull){
-            if(rightNull){ // Target has no children
-                targetNode = null;
-                return targetParent;
-            }
-            else { // Target only has right child
-                targetNode = rightChildOfTarget;
-                targetNode.setParent(targetParent);
-            }
-        }
-        else if(rightNull){ // Target only has left child
-            targetNode = leftChildOfTarget;
-            targetNode.setParent(targetParent);
-        }
-        else { // Target has two children
-            Iterator<Integer> treeIter = this.iterator();
-            int current = targetValue - 1;
-            while (current != targetValue) {
-                current = treeIter.next();
-            }
-            int nextValue = treeIter.next();
-            delete(nextValue);
-            targetNode.setData(nextValue);
-        }
-
-        return targetNode;
-    }
 
     /**
      * Take an integer representing the height of an AvlTree and return the minimum number of nodes
@@ -238,90 +258,90 @@ public class AvlTree extends BinarySearchTree {
         return (int)Math.pow(2, h+1) - 1;
     }
 
-    private void rotateLeft(AvlNode rotateRoot){
-        System.out.println("rotate left on " + rotateRoot.getData());
-        boolean printzero = (rotateRoot.getData() == 0);
-        if(printzero) System.out.println(rotateRoot.findNodeBalance() + " zero balance");
-        if (rotateRoot.getLeftChild() != null) {
-            //Set new references
-            AvlNode newRoot = rotateRoot.getLeftChild(); // The left child is being pulled up.
-            AvlNode newRightChildOfRoot = newRoot.getRightChild();
-            AvlNode newRootParent = rotateRoot.getParent();
-
-            //Rotate root
-            newRoot.setChild(rotateRoot);
-            rotateRoot.setChild(newRightChildOfRoot);
-            if (newRootParent == null){
-                newRoot.setParent(null);
-                root = newRoot;
-            }
-            else newRootParent.setChild(newRoot);
-
-            //Adjust heights
-            newRoot.setNodeHeight();
-            rotateRoot.setNodeHeight();
+    // A utility function to print preorder traversal
+    // of the tree.
+    // The function also prints height of every node
+    void preOrder(AvlNode node) {
+        if (node != null) {
+            System.out.print(node.getData() + " ");
+            preOrder(node.getLeftChild());
+            preOrder(node.getRightChild());
         }
     }
 
+    public void printNode(AvlNode node){
+        System.out.println(node.getData());
+    }
 
-    private void rotateRight(AvlNode rotateRoot){
-        System.out.println("rotate right on" + rotateRoot.getData());
-        if (rotateRoot.getRightChild() != null){
-            //Set new references
-            AvlNode newRoot = rotateRoot.getRightChild();
-            AvlNode newLeftChildOfRoot = newRoot.getLeftChild();
-            AvlNode newRootParent = rotateRoot.getParent();
+    public void printTree(AvlNode node){
+        if(node.getRightChild() != null)
+            printTree(true,"", node.getRightChild());
+        printNode(node);
+        if(node.getLeftChild() != null)
+            printTree(false,"", node.getLeftChild());
+    }
 
-            //Rotate root
-            newRoot.setChild(rotateRoot);
-            System.out.println(rotateRoot.getData() + " asks " + rotateRoot.getParent().getData() + "Are " +
-                            "you my mommy?");
-            rotateRoot.setChild(newLeftChildOfRoot);
-            if (newRootParent == null){
-                newRoot.setParent(null);
-                System.out.println("here?");
-                root = newRoot;
-            }
-            else newRootParent.setChild(newRoot);
-
-            //Adjust heights
-            rotateRoot.setNodeHeight();
-            newRoot.setNodeHeight();
+    public void printTree(boolean isRight, String indent, AvlNode node){
+        AvlNode rightNode = null;
+        if(node.getRightChild() != null)
+            rightNode = node.getRightChild();
+        if (rightNode != null) {
+            printTree(true, indent + (isRight ? "        " : " |      "), rightNode);
+        }
+        System.out.print(indent);
+        if (isRight) System.out.print(" /");
+        else System.out.print(" \\");
+        System.out.print("----- ");
+        printNode(node);
+        AvlNode leftNode = node.getLeftChild();
+        if (leftNode != null) {
+            printTree(false, indent + (isRight ? " |      " : "        "), leftNode);
         }
     }
 
-//    public void printNode(AvlNode node){
-//        System.out.println(node.getData());
-//    }
-//
-//    public void printTree(AvlNode node){
-//        if(node.rightChild != null)
-//            printTree(true,"", node.rightChild);
-//        printNode(node);
-//        if(node.leftChild != null)
-//            printTree(false,"", node.leftChild);
-//    }
-//
-//    public void printTree(boolean isRight, String indent, AvlNode node){
-//        AvlNode rightNode = null;
-//        if(node.getRightChild() != null)
-//            rightNode = node.getRightChild();
-//        if (rightNode != null) {
-//            printTree(true, indent + (isRight ? "        " : " |      "), rightNode);
-//        }
-//        System.out.print(indent);
-//        if (isRight) System.out.print(" /");
-//        else System.out.print(" \\");
-//        System.out.print("----- ");
-//        printNode(node);
-//        AvlNode leftNode = node.getLeftChild();
-//        if (leftNode != null) {
-//            printTree(false, indent + (isRight ? " |      " : "        "), leftNode);
-//        }
-//    }
+    public static void main(String[] args){
+        AvlTree tree = new AvlTree();
 
-    public static void main(java.lang.String[] args){
+        /* Constructing tree given in the above figure */
+        tree.root = tree.addNode(tree.root, 0);
+        tree.root = tree.addNode(tree.root, 29);
+        tree.root = tree.addNode(tree.root, 28);
+        tree.root = tree.addNode(tree.root, 27);
+        tree.root = tree.addNode(tree.root, 26);
+        tree.root = tree.addNode(tree.root, 25);
+        tree.root = tree.addNode(tree.root, 24);
+        tree.root = tree.addNode(tree.root, 23);
+        tree.root = tree.addNode(tree.root, 22);
+        tree.root = tree.addNode(tree.root, 21);
 
+        /* The constructed AVL Tree would be
+           9
+          /  \
+         1    10
+        /  \    \
+        0    5    11
+        /    /  \
+        -1   2    6
+         */
+        System.out.println("Preorder traversal of "+
+                "constructed tree is : ");
+        tree.preOrder(tree.root);
+
+        tree.root = tree.deleteNode(tree.root, 10);
+
+        /* The AVL Tree after deletion of 10
+           1
+          /  \
+         0    9
+        /     / \
+        -1    5   11
+        /  \
+        2    6
+//         */
+//        System.out.println("");
+//        System.out.println("Preorder traversal after "+
+//                "deletion of 10 :");
+//        tree.preOrder(tree.root);
     }
 
 }
