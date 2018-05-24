@@ -6,25 +6,24 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
 
 
     /** Represents false when a queried value is not in the tree. */
-    protected final static int NEGATIVE_CONTAINS_RESULT = -1;
+    final static int NEGATIVE_CONTAINS_RESULT = -1;
 
     /**
-     *
-     * @return
+     * @return the root of the tree.
      */
     abstract TreeNode getRoot();
 
     /**
-     * Take an integer and add it to the Avl tree
+     * Take an integer and add it to the Binary Search Tree
      * @param newValue the integer value to be added
      * @return True if the value was added successfully, false otherwise
      */
     public abstract boolean add(int newValue);
 
     /**
-     * Take an integer and attempt to delete it from the Avl tree
+     * Take an integer and attempt to delete it from the Binary Search Tree
      * @param toDelete the value to be deleted
-     * @return True if the value is found and deleted successfuly, false otherwise.
+     * @return True if the value is found and deleted successfully, false otherwise.
      */
     public abstract boolean delete(int toDelete);
 
