@@ -127,9 +127,9 @@ public class AvlTree extends BinarySearchTree {
 
         // Data to be added is smaller --> go to left subtree
         if (addValue < node.getData()) node.setLeftChild(addNode(node.getLeftChild(), addValue));
-        // Data to be added is greater --> go to right subtree
+            // Data to be added is greater --> go to right subtree
         else if (addValue > node.getData()) node.setRightChild(addNode(node.getRightChild(), addValue));
-        // Data is the same and duplicate keys not allowed
+            // Data is the same and duplicate keys not allowed
         else return node;
 
         // Update height of the current node
@@ -177,9 +177,9 @@ public class AvlTree extends BinarySearchTree {
 
         // Data to be deleted is smaller --> go to left subtree
         if (toDelete < node.getData()) node.setLeftChild(deleteNode(node.getLeftChild(), toDelete));
-        // Data to be deleted is greater --> go to right subtree
+            // Data to be deleted is greater --> go to right subtree
         else if (toDelete > node.getData())node.setRightChild(deleteNode(node.getRightChild(), toDelete));
-        // Data to be deleted is at the node, so it should be deleted.
+            // Data to be deleted is at the node, so it should be deleted.
         else {
             // Node has only one child or no children
             if ((node.getLeftChild() == null) || (node.getRightChild() == null)) {
@@ -191,6 +191,7 @@ public class AvlTree extends BinarySearchTree {
                 if (temp == null) {
                     temp = node;
                     node = null;
+                    return temp;
                 } else node = temp;  // One child case
             } else {
                 // Node has two children
