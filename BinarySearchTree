@@ -71,7 +71,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * Returns an Iterator object that iterates over the elements of the BST tree in ascending order
      * @return An Iterator object that does not implement remove()
      */
-    public java.util.Iterator<Integer> iterator(){
+    public java.util.Iterator<Integer> iterator() throws UnsupportedOperationException{
 
         class BSTIterator implements Iterator<Integer>{
             TreeNode current = treeMinimum(getRoot());
@@ -87,6 +87,10 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
                 Integer data = current.getData();
                 current = treeSuccessor(current);
                 return data;
+            }
+
+            public void remove(){
+                throw new UnsupportedOperationException();
             }
         }
 
