@@ -2,15 +2,13 @@ package oop.ex4.data_structures;
 
 public class AvlNode implements oop.ex4.data_structures.TreeNode {
 
-    private static final int LEFT_SUB_HEIGHT = 0;
-    private static final int RIGHT_SUB_HEIGHT = 1;
     private static final int INITIAL_HEIGHT = 0;
 
     private int data;
     private int height;
     private AvlNode parent;
-    public AvlNode rightChild;
-    public AvlNode leftChild;
+    private AvlNode rightChild;
+    private AvlNode leftChild;
 
     /**
      * A constructor for the AvlNode class. This constructor should only be used for the root.
@@ -19,8 +17,6 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
     public AvlNode(int setData){
         data = setData;
         parent = null;
-        rightChild = null;
-        leftChild = null;
         height = INITIAL_HEIGHT;
     }
 
@@ -32,39 +28,30 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
     public AvlNode(int setData, AvlNode setParent){
         data = setData;
         parent = setParent;
-        rightChild = null;
-        leftChild = null;
         height = INITIAL_HEIGHT;
     }
 
-    public void setChild(TreeNode newChild){
-        if (newChild != null){
-            if (newChild.getData() > this.data){
-                rightChild = (AvlNode) newChild;
-                rightChild.setParent(this);
-            }
-            else if (newChild.getData() < this.data){
-                leftChild = (AvlNode) newChild;
-                leftChild.setParent(this);
-            }
+    @Override
+    public void setRightChild(TreeNode newRightChild){
+        if (newRightChild != null) {
+            rightChild = (AvlNode) newRightChild;
+            rightChild.setParent(this);
+        } else{
+            if (parent.getData() > data) rightChild = null;
+            else leftChild = null;
         }
     }
 
-//    @Override
-//    public void setRightChild(TreeNode newRightChild){
-//        if (newRightChild != null) {
-//            rightChild = (AvlNode) newRightChild;
-//            rightChild.setParent(this);
-//        }
-//    }
-//
-//    @Override
-//    public void setLeftChild(TreeNode newLeftChild){
-//        if (newLeftChild != null) {
-//            leftChild = (AvlNode) newLeftChild;
-//            leftChild.setParent(this);
-//        }
-//    }
+    @Override
+    public void setLeftChild(TreeNode newLeftChild){
+        if (newLeftChild != null) {
+            leftChild = (AvlNode) newLeftChild;
+            leftChild.setParent(this);
+        } else{
+            if (parent.getData() > data) rightChild = null;
+            else leftChild = null;
+        }
+    }
 
     @Override
     public void setParent(TreeNode newParent){
@@ -101,45 +88,18 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         return height;
     }
 
-    public int findNodeBalance(){
-        boolean print = (data == 0);
-        int leftHeight = 0;
-        int rightHeight = 0;
-
-        if (leftChild != null){
-            leftHeight = leftChild.getHeight() + 1;
-        }
-        if (rightChild != null){
-            rightHeight = rightChild.getHeight() + 1;
-        }
-        if(print) System.out.println("ROOT LEFT HEIGHT:" + leftHeight + "ROOT RIGHT HEIGHT:" + rightHeight);
-
-        return (leftHeight - rightHeight);
-    }
-
-    public void setNodeHeight(){
-        boolean printzero = (data == 0);
+    @Override
+    public void setHeight(){
         int leftHeight = -1;
         int rightHeight = -1;
 
         if (leftChild != null){
-            leftHeight = leftChild.getHeight() + 1;
+            leftHeight = leftChild.getHeight();
         }
         if (rightChild != null){
-            rightHeight = rightChild.getHeight() + 1;
+            rightHeight = rightChild.getHeight();
         }
-        if(printzero)
-            System.out.println(leftHeight + " ZEROLEFT " + rightHeight + " ZERORIGHT");
         height = Math.max(leftHeight, rightHeight) + 1;
     }
-
-    public void increaseHeight(){
-        height++;
-    }
-
-    public void decreaseHeight(){
-        height--;
-    }
-
 
 }
