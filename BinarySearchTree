@@ -43,16 +43,14 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
      */
     private int containsHelper(TreeNode node, int searchVal, int depth) {
-        if (node == null) return NEGATIVE_CONTAINS_RESULT;
+        if (node == null) {
+            return NEGATIVE_CONTAINS_RESULT;
+        }
         else if (node.getData() == searchVal) return (depth);
 
         /* Check if current key is larger or greater than search value. */
-        if (node.getData() < searchVal){
-            return containsHelper(node.getRightChild(), searchVal, depth+1);
-        }
-        else{
-            return containsHelper(node.getLeftChild(), searchVal, depth+1);
-        }
+        if (node.getData() < searchVal) return containsHelper(node.getRightChild(), searchVal, depth+1);
+        else return containsHelper(node.getLeftChild(), searchVal, depth+1);
     }
 
     /**
@@ -87,8 +85,9 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
 
             @Override
             public Integer next() {
+                Integer data = current.getData();
                 current = treeSuccessor(current);
-                return current.getData();
+                return data;
             }
         }
 
@@ -100,7 +99,8 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @param node the current node being analyzed.
      * @return the successor node.
      */
-    private TreeNode treeSuccessor(TreeNode node) {
+    TreeNode treeSuccessor(TreeNode node) {
+        if (node == treeMaximum(getRoot())) return null;
         if (node.getRightChild() != null) return treeMinimum(node.getRightChild());
         TreeNode otherNode = node.getParent();
 
@@ -116,12 +116,27 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @param node the "root" of the tree being analyzed.
      * @return the smallest node in the tree.
      */
-    private TreeNode treeMinimum(TreeNode node){
+    TreeNode treeMinimum(TreeNode node){
         if(node == null){
             return node;
         }
         while (node.getLeftChild() != null) {
             node = node.getLeftChild();
+        }
+        return node;
+    }
+
+    /**
+     * Find the "largest" (has most minimal value) node in the tree.
+     * @param node the "root" of the tree being analyzed.
+     * @return the largest node in the tree.
+     */
+    TreeNode treeMaximum(TreeNode node){
+        if(node == null){
+            return node;
+        }
+        while (node.getRightChild() != null) {
+            node = node.getRightChild();
         }
         return node;
     }
