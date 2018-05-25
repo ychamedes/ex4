@@ -1,8 +1,9 @@
+/**
+ * This class is a tree node specifically for an AVL Tree.
+ */
 package oop.ex4.data_structures;
 
 public class AvlNode implements oop.ex4.data_structures.TreeNode {
-
-    private static final int INITIAL_HEIGHT = 0;
 
     private int data;
     private int height;
@@ -17,18 +18,7 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
     public AvlNode(int setData){
         data = setData;
         parent = null;
-        height = INITIAL_HEIGHT;
-    }
-
-    /**
-     * A constructor for the AvlNode class. This constructor should be used for the nodes other than the root.
-     * @param setData the value to be set as the node's data.
-     * @param setParent the node that is this node's parent.
-     */
-    public AvlNode(int setData, AvlNode setParent){
-        data = setData;
-        parent = setParent;
-        height = INITIAL_HEIGHT;
+        height = 0;
     }
 
     @Override
@@ -36,10 +26,7 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         if (newRightChild != null) {
             rightChild = (AvlNode) newRightChild;
             rightChild.setParent(this);
-        } else{
-            if (parent.getData() > data) rightChild = null;
-            else leftChild = null;
-        }
+        } else rightChild = null;
     }
 
     @Override
@@ -47,10 +34,7 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
         if (newLeftChild != null) {
             leftChild = (AvlNode) newLeftChild;
             leftChild.setParent(this);
-        } else{
-            if (parent.getData() > data) rightChild = null;
-            else leftChild = null;
-        }
+        } else leftChild = null;
     }
 
     @Override
@@ -90,15 +74,13 @@ public class AvlNode implements oop.ex4.data_structures.TreeNode {
 
     @Override
     public void setHeight(){
+        // Initialize height as if node is leaf.
         int leftHeight = -1;
         int rightHeight = -1;
 
-        if (leftChild != null){
-            leftHeight = leftChild.getHeight();
-        }
-        if (rightChild != null){
-            rightHeight = rightChild.getHeight();
-        }
+        if (leftChild != null) leftHeight = leftChild.getHeight();
+        if (rightChild != null) rightHeight = rightChild.getHeight();
+
         height = Math.max(leftHeight, rightHeight) + 1;
     }
 
