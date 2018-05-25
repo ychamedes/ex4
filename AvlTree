@@ -1,6 +1,7 @@
+/**
+ * This class is the complete and tested implementation of an AVL-tree.
+ */
 package oop.ex4.data_structures;
-
-import java.util.Iterator;
 
 public class AvlTree extends BinarySearchTree {
 
@@ -20,9 +21,8 @@ public class AvlTree extends BinarySearchTree {
      */
     public AvlTree(int[] data){
         if(data != null) {
-            for (int newValue : data) {
-                add(newValue);
-            }
+            bubbleSort(data);
+            root = dataToTree(data,0, data.length);
         } else root = null; // No data. Create an empty tree.
     }
 
@@ -31,19 +31,77 @@ public class AvlTree extends BinarySearchTree {
      * @param tree the AvlTree to be deep-copied
      */
     public AvlTree(AvlTree tree){
-        if(tree != null) {
-            Iterator<Integer> treeIter = tree.iterator();
-            AvlTree copyTree = new AvlTree();
-            while(treeIter.hasNext()){
-                copyTree.add(treeIter.next());
-            }
-        } else root = null; // No tree to copy. Create an empty tree.
+        if (tree != null) root = copy((AvlNode) tree.getRoot());
+        else root = null; // No tree to copy. Create an empty tree.
     }
 
     /**
-     *
-     * @param node
-     * @return
+     * A recursive method that takes data from an array, halves it, and set the median as the root of a subtree.
+     * @param data the data array
+     * @param start starting point to count the array
+     * @param end end point to count the array
+     * @return root of the tree
+     */
+    private AvlNode dataToTree(int[] data, int start, int end){
+        if (start >= end) return null; // We reached the end
+
+        // Get middle of array and make it the root
+        int middle = (start + end) / 2;
+        AvlNode node = new AvlNode(data[middle]);
+
+        // Recursively do the same on each subtree
+        node.setLeftChild(dataToTree(data, start, middle - 1));
+        node.setRightChild(dataToTree(data, middle + 1, end));
+
+        return node;
+    }
+
+    /**
+     * Uses the bubbleSort algorithm to sort the data array.
+     * @param array the data array
+     */
+    private void bubbleSort(int[] array) {
+        boolean swapped = true;
+        int increment = 0;
+        int temp;
+        while (swapped) {
+            swapped = false;
+            increment++;
+            for (int i = 0; i < array.length - increment; i++) {
+                if (array[i] > array[i + 1]) {
+                    temp = array[i];
+                    array[i] = array[i + 1];
+                    array[i + 1] = temp;
+                    swapped = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * A recursive method that copies the values and hierarchy of an existing Avl node.
+     * @param node the existing node to be copied
+     * @return the copied node (as a root of a tree)
+     */
+    private AvlNode copy(AvlNode node){
+        if (node == null) return node;
+
+        // Create copy of node pointed to by root.
+        AvlNode temp = new AvlNode(node.getData());
+
+        if (node.getLeftChild() != null) temp.setLeftChild(copy(node.getLeftChild()));
+        else if (temp.getParent() != null) temp.setLeftChild(null);
+
+        if (node.getRightChild() != null) temp.setRightChild(copy(node.getRightChild()));
+        else if (temp.getParent() != null) temp.setRightChild(null);
+
+        return temp;
+    }
+
+    /**
+     * Calculates that balance of a node by comparing the heights of its subtrees.
+     * @param node the node being queried
+     * @return the balance of the node
      */
     int getBalance(AvlNode node) {
         if (node == null) return 0;
@@ -120,6 +178,12 @@ public class AvlTree extends BinarySearchTree {
         else return false;
     }
 
+    /**
+     * A helper method that recursively goes through the tree to add the node and balances it throughout.
+     * @param node root of current subtree
+     * @param addValue value to be added
+     * @return new root of subtree
+     */
     private AvlNode addNode(AvlNode node, int addValue){
         // Standard BST insertion
         if (node == null)
@@ -127,9 +191,9 @@ public class AvlTree extends BinarySearchTree {
 
         // Data to be added is smaller --> go to left subtree
         if (addValue < node.getData()) node.setLeftChild(addNode(node.getLeftChild(), addValue));
-            // Data to be added is greater --> go to right subtree
+        // Data to be added is greater --> go to right subtree
         else if (addValue > node.getData()) node.setRightChild(addNode(node.getRightChild(), addValue));
-            // Data is the same and duplicate keys not allowed
+        // Data is the same and duplicate keys not allowed
         else return node;
 
         // Update height of the current node
@@ -140,7 +204,9 @@ public class AvlTree extends BinarySearchTree {
 
         if (balance > 1){
             // Left Left Case
-            if (addValue < node.getLeftChild().getData()) return rotateRight(node);
+            if (addValue < node.getLeftChild().getData()) {
+                return rotateRight(node);
+            }
             // Left Right Case
             if (addValue > node.getLeftChild().getData()) {
                 node.setLeftChild(rotateLeft(node.getLeftChild()));
@@ -148,7 +214,9 @@ public class AvlTree extends BinarySearchTree {
             }
         } else if (balance < -1){
             // Right Right Case
-            if (addValue > node.getRightChild().getData()) return rotateLeft(node);
+            if (addValue > node.getRightChild().getData()) {
+                return rotateLeft(node);
+            }
             // Right Left Case
             if (addValue < node.getRightChild().getData()) {
                 node.setRightChild(rotateRight(node.getRightChild()));
@@ -171,6 +239,12 @@ public class AvlTree extends BinarySearchTree {
         else return false;
     }
 
+    /**
+     * A helper method that recursively goes through the tree to delete the node and balances it throughout.
+     * @param node root of current subtree
+     * @param toDelete value to be deleted
+     * @return new root of subtree
+     */
     private AvlNode deleteNode(AvlNode node, int toDelete){
         // Standard BST deletion
         if (node == null) return node;
@@ -189,14 +263,12 @@ public class AvlTree extends BinarySearchTree {
 
                 // No children case
                 if (temp == null) {
-                    temp = node;
                     node = null;
-                    return temp;
                 } else node = temp;  // One child case
             } else {
                 // Node has two children
                 // Get the inorder successor (smallest in the right subtree)
-                AvlNode temp = (AvlNode) treeMinimum(node.getRightChild());
+                AvlNode temp = (AvlNode) treeSuccessor(node);
 
                 // Copy the inorder successor's data to this node
                 node.setData(temp.getData());
@@ -216,7 +288,9 @@ public class AvlTree extends BinarySearchTree {
 
         if (balance > 1){
             // Left Left Case
-            if (getBalance(node.getLeftChild()) >= 0) return rotateRight(node);
+            if (getBalance(node.getLeftChild()) >= 0) {
+                return rotateRight(node);
+            }
             // Left Right Case
             if (getBalance(node.getLeftChild()) < 0) {
                 node.setLeftChild(rotateLeft(node.getLeftChild()));
@@ -224,7 +298,9 @@ public class AvlTree extends BinarySearchTree {
             }
         } else if (balance < -1){
             // Right Right Case
-            if (getBalance(node.getRightChild()) <= 0) return rotateLeft(node);
+            if (getBalance(node.getRightChild()) <= 0){
+                return rotateLeft(node);
+            }
             // Right Left Case
             if (balance < -1 && getBalance(node.getRightChild()) > 0) {
                 node.setRightChild(rotateRight(node.getRightChild()));
@@ -259,17 +335,6 @@ public class AvlTree extends BinarySearchTree {
         return (int)Math.pow(2, h+1) - 1;
     }
 
-    // A utility function to print preorder traversal
-    // of the tree.
-    // The function also prints height of every node
-    void preOrder(AvlNode node) {
-        if (node != null) {
-            System.out.print(node.getData() + " ");
-            preOrder(node.getLeftChild());
-            preOrder(node.getRightChild());
-        }
-    }
-
     public void printNode(AvlNode node){
         System.out.println(node.getData());
     }
@@ -301,48 +366,6 @@ public class AvlTree extends BinarySearchTree {
     }
 
     public static void main(String[] args){
-        AvlTree tree = new AvlTree();
-
-        /* Constructing tree given in the above figure */
-        tree.root = tree.addNode(tree.root, 0);
-        tree.root = tree.addNode(tree.root, 29);
-        tree.root = tree.addNode(tree.root, 28);
-        tree.root = tree.addNode(tree.root, 27);
-        tree.root = tree.addNode(tree.root, 26);
-        tree.root = tree.addNode(tree.root, 25);
-        tree.root = tree.addNode(tree.root, 24);
-        tree.root = tree.addNode(tree.root, 23);
-        tree.root = tree.addNode(tree.root, 22);
-        tree.root = tree.addNode(tree.root, 21);
-
-        /* The constructed AVL Tree would be
-           9
-          /  \
-         1    10
-        /  \    \
-        0    5    11
-        /    /  \
-        -1   2    6
-         */
-        System.out.println("Preorder traversal of "+
-                "constructed tree is : ");
-        tree.preOrder(tree.root);
-
-        tree.root = tree.deleteNode(tree.root, 10);
-
-        /* The AVL Tree after deletion of 10
-           1
-          /  \
-         0    9
-        /     / \
-        -1    5   11
-        /  \
-        2    6
-//         */
-//        System.out.println("");
-//        System.out.println("Preorder traversal after "+
-//                "deletion of 10 :");
-//        tree.preOrder(tree.root);
     }
 
 }
