@@ -1,6 +1,10 @@
+/**
+ * This is an abstract class for a binary search tree (BST).
+ */
 package oop.ex4.data_structures;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public abstract class BinarySearchTree implements Iterable<Integer> {
 
@@ -42,9 +46,7 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @return The depth of the element in the tree if the tree contains the value, -1 otherwise
      */
     private int containsHelper(TreeNode node, int searchVal, int depth) {
-        if (node == null) {
-            return NEGATIVE_CONTAINS_RESULT;
-        }
+        if (node == null) return NEGATIVE_CONTAINS_RESULT;
         else if (node.getData() == searchVal) return (depth);
 
         /* Check if current key is larger or greater than search value. */
@@ -57,19 +59,24 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
      * @return the current size of the tree
      */
     public int size(){
-        int counter = 0;
-        Iterator iterator = iterator();
+        return size(getRoot());
+    }
 
-        while(iterator.hasNext()){
-            counter++;
-            iterator.next();
-        }
-        return counter;
+    /**
+     * Recursive method for finding size of a tree.
+     * @param node the tree to find size of
+     * @return the size of the tree.
+     */
+    private int size(TreeNode node){
+        if (node == null) return 0;
+        return size(node.getLeftChild()) + size(node.getRightChild()) + 1;
     }
 
     /**
      * Returns an Iterator object that iterates over the elements of the BST tree in ascending order
      * @return An Iterator object that does not implement remove()
+     * @throws UnsupportedOperationException If remove() is called
+     * @throws NoSuchElementException If next() is called, but the next element does not exist
      */
     public java.util.Iterator<Integer> iterator() throws UnsupportedOperationException{
 
@@ -84,9 +91,13 @@ public abstract class BinarySearchTree implements Iterable<Integer> {
 
             @Override
             public Integer next() {
-                Integer data = current.getData();
-                current = treeSuccessor(current);
-                return data;
+                if(current == null)
+                    throw new NoSuchElementException();
+                else {
+                    Integer data = current.getData();
+                    current = treeSuccessor(current);
+                    return data;
+                }
             }
 
             public void remove(){
