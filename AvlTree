@@ -191,9 +191,9 @@ public class AvlTree extends BinarySearchTree {
 
         // Data to be added is smaller --> go to left subtree
         if (addValue < node.getData()) node.setLeftChild(addNode(node.getLeftChild(), addValue));
-        // Data to be added is greater --> go to right subtree
+            // Data to be added is greater --> go to right subtree
         else if (addValue > node.getData()) node.setRightChild(addNode(node.getRightChild(), addValue));
-        // Data is the same and duplicate keys not allowed
+            // Data is the same and duplicate keys not allowed
         else return node;
 
         // Update height of the current node
@@ -334,38 +334,6 @@ public class AvlTree extends BinarySearchTree {
     public static int findMaxNodes(int h){
         return (int)Math.pow(2, h+1) - 1;
     }
-
-    public void printNode(AvlNode node){
-        System.out.println(node.getData());
-    }
-
-    public void printTree(AvlNode node){
-        if(node.getRightChild() != null)
-            printTree(true,"", node.getRightChild());
-        printNode(node);
-        if(node.getLeftChild() != null)
-            printTree(false,"", node.getLeftChild());
-    }
-
-    public void printTree(boolean isRight, String indent, AvlNode node){
-        AvlNode rightNode = null;
-        if(node.getRightChild() != null)
-            rightNode = node.getRightChild();
-        if (rightNode != null) {
-            printTree(true, indent + (isRight ? "        " : " |      "), rightNode);
-        }
-        System.out.print(indent);
-        if (isRight) System.out.print(" /");
-        else System.out.print(" \\");
-        System.out.print("----- ");
-        printNode(node);
-        AvlNode leftNode = node.getLeftChild();
-        if (leftNode != null) {
-            printTree(false, indent + (isRight ? " |      " : "        "), leftNode);
-        }
-    }
-
-    public static void main(String[] args){
-    }
+    
 
 }
